@@ -10,7 +10,19 @@ output:
 
 ```{r setup, include = FALSE}
 library(tidyverse)
-library(kableExtra) # for example code; delete if not needed
+library(kableExtra)
+library(robotstxt) 
+library(rvest) 
+library(purrr)
+library(janitor)
+library(tidytext)
+library(wordcloud)
+library(textdata)
+library(sf)
+library(leaflet)
+library(kableExtra)
+library(viridis)
+library(plotly)
 
 # Set code chunk defaults 
 knitr::opts_chunk$set(echo = FALSE, 
@@ -44,7 +56,18 @@ You can embed code as normal, for example:
 
 ```{r cars}
 summary(cars)
+netflix_map_by_country <- read_csv(file = 'netflix_map_by_country.csv')
 
+# load in world map data
+world_map <- maps::map("world", plot = FALSE, fill = TRUE) %>% 
+  st_as_sf()
+
+# Make the IDs lowercase to match other dataset
+world_map$ID <- tolower(world_map$ID)
+
+# join world map and movies/shows by country datasets
+netflix_map_shows <- world_map %>%
+  inner_join(netflix_map_by_country, by = "ID")
 ```
 
 Let's clean up the format of that output instead of using the standard R output:
@@ -71,6 +94,16 @@ ggplot(data = cars, aes(x = speed, y = dist)) +
        title = "Stopping distance increases with faster speeds",
        subtitle = "Based on 1920s study") +
   theme_classic()
+
+ggplot() +
+  geom_sf(data = netflix_map_shows, aes(fill = number_of_films)) +
+  scale_fill_viridis(option = "viridis", direction = -1) +
+  geom_sf(data = world_map, fill = NA, color = "black") +
+  theme_void() +
+  labs(fill = "Number of Movies/Shows Filmed in Country",
+       title = "Countries Netflix Shows/Movies Have Been Filmed In",
+       subtitle = "From 2013 to 2019") +
+  theme(legend.position = "bottom", legend.key.width = unit(2,"cm"))
 ```
 
 Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 

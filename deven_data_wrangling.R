@@ -154,6 +154,9 @@ netflix_map_shows <- world_map %>%
 
 # dataset for Netflix shows by country with coordinates: netflix_map_shows
 
+# write netflix_map_by_country to csv (cant write geom to csv?)
+write.csv(netflix_map_by_country, file = 'netflix_map_by_country.csv')
+
 # draft plot of shows/movies by country
 ggplot() +
   geom_sf(data = netflix_map_shows, aes(fill = number_of_films)) +
@@ -163,7 +166,8 @@ ggplot() +
   labs(fill = "Number of Movies/Shows Filmed in Country",
        title = "Countries Netflix Shows/Movies Have Been Filmed In",
        subtitle = "From 2013 to 2019") +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom", legend.key.width = unit(2,"cm"))
+
 
 
 

@@ -27,6 +27,7 @@ shows_info_data <- tibble(show_info = shows_info)
 netflix_shows <- read_csv("netflix_titles.csv")
 netflix_subs <- read_csv("revenue_subscriber_data.csv")
 
+# convert numbers from 5.9M for ex. to 5900000 for each var
 num <- c(netflix_subs$'# of Subscribers Q1 2021')
 num <- gsub('K', 'e3', num)
 num <- gsub('M', 'e6', num)

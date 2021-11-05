@@ -34,8 +34,8 @@ shows_info_data <- tibble(show_info = shows_info)
 
 # reading in csv
 
-netflix_shows <- read_csv("netflix_titles.csv")
-netflix_subs <- read_csv("revenue_subscriber_data.csv")
+netflix_shows <- read_csv("data/netflix_titles.csv")
+netflix_subs <- read_csv("data/revenue_subscriber_data.csv")
 
 ########
 # Maps #
@@ -110,10 +110,9 @@ netflix_subs$'Q4 2021 Revenue $ (Estimate)' <-
 netflix_subs$'Q4 2021 Revenue $ (Estimate)' <- 
   as.numeric(netflix_subs$'Q4 2021 Revenue $ (Estimate)')
 
-# filter out all variables except country, show title, type, and ID 
-# from Netflix shows dataset
-
+# Netflix shows dataset
 netflix_map <- netflix_shows %>%
+  # filter out all variables except country, show title, type, and ID 
   select(show_id, type, title, country) %>%
   # If movies have multiple countries, make a new row for each country
   unnest_tokens(output = country, input = country, token = "regex", 
@@ -121,6 +120,7 @@ netflix_map <- netflix_shows %>%
   # Drop NAs
   drop_na()
 
+# Get number of shows/movies by country
 netflix_map_by_country <- netflix_map %>%
   group_by(country) %>%
   summarize(number_of_films = n())

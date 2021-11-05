@@ -153,6 +153,8 @@ netflix_map_shows <- world_map %>%
   inner_join(netflix_map_by_country, by = "ID")
 
 # dataset for Netflix shows by country with coordinates: netflix_map_shows
+
+# draft plot of shows/movies by country
 ggplot() +
   geom_sf(data = netflix_map_shows, aes(fill = number_of_films)) +
   scale_fill_viridis(option = "viridis", direction = -1) +

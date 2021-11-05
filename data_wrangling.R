@@ -155,11 +155,11 @@ netflix_map_shows <- world_map %>%
 # dataset for Netflix shows by country with coordinates: netflix_map_shows
 ggplot() +
   geom_sf(data = netflix_map_shows, aes(fill = number_of_films)) +
-  scale_fill_viridis(option = "magma", direction = -1) +
+  scale_fill_viridis(option = "viridis", direction = -1) +
   geom_sf(data = world_map, fill = NA, color = "black") +
   theme_void() +
   labs(fill = "Number of Movies/Shows Filmed in Country",
-       title = "Countries Netflix Shows/Movies Have Been Filmed",
+       title = "Countries Netflix Shows/Movies Have Been Filmed In",
        subtitle = "From 2013 to 2019") +
   theme(legend.position = "bottom")
 

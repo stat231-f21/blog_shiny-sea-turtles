@@ -44,6 +44,7 @@ You can embed code as normal, for example:
 
 ```{r cars}
 summary(cars)
+
 ```
 
 Let's clean up the format of that output instead of using the standard R output:

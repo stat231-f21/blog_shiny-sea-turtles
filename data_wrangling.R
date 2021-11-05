@@ -7,6 +7,11 @@ library(janitor)
 library(tidytext)
 library(wordcloud)
 library(textdata)
+library(sf)
+library(leaflet)
+library(kableExtra)
+library(viridis)
+library(plotly)
 
 # scraping
 
@@ -118,14 +123,45 @@ netflix_map <- netflix_shows %>%
   unnest_tokens(output = country, input = country, token = "regex", 
                 pattern = c(", ")) %>%
   # Drop NAs
-  drop_na()
+  drop_na() %>%
+  # Rename country to ID to match world map data
+  rename(ID = country)
+
+# change country names to match country names in world map data
+netflix_map$ID[netflix_map$ID == "united kingdom"] <- "uk"
+netflix_map$ID[netflix_map$ID == "united states"] <- "usa"
+netflix_map$ID[netflix_map$ID == "east germany"] <- "germany"
+netflix_map$ID[netflix_map$ID == "west germany"] <- "germany"
+netflix_map$ID[netflix_map$ID == "soviet union"] <- "russia"
+netflix_map$ID[netflix_map$ID == "hong kong"] <- "china"
+netflix_map$ID[netflix_map$ID == "vatican city"] <- "vatican"
 
 # Get number of shows/movies by country
 netflix_map_by_country <- netflix_map %>%
-  group_by(country) %>%
+  group_by(ID) %>%
   summarize(number_of_films = n())
 
+# load in world map data
+world_map <- maps::map("world", plot = FALSE, fill = TRUE) %>% 
+  st_as_sf()
 
+# Make the IDs lowercase to match other dataset
+world_map$ID <- tolower(world_map$ID)
+
+# join world map and movies/shows by country datasets
+netflix_map_shows <- world_map %>%
+  inner_join(netflix_map_by_country, by = "ID")
+
+# dataset for Netflix shows by country with coordinates: netflix_map_shows
+ggplot() +
+  geom_sf(data = netflix_map_shows, aes(fill = number_of_films)) +
+  scale_fill_viridis(option = "magma", direction = -1) +
+  geom_sf(data = world_map, fill = NA, color = "black") +
+  theme_void() +
+  labs(fill = "Number of Movies/Shows Filmed in Country",
+       title = "Countries Netflix Shows/Movies Have Been Filmed",
+       subtitle = "From 2013 to 2019") +
+  theme(legend.position = "bottom")
 
 
 

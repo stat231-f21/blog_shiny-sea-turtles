@@ -1,3 +1,13 @@
+library(tidyverse)
+library(kableExtra)
+library(robotstxt) 
+library(rvest) 
+library(purrr)
+library(janitor)
+library(tidytext)
+library(wordcloud)
+library(textdata)
+
 # scraping
 
 url <- "https://www.whats-on-netflix.com/news/every-viewing-statistic-netflix-has-released-so-far-october-2021/"
@@ -27,11 +37,95 @@ shows_info_data <- tibble(show_info = shows_info)
 netflix_shows <- read_csv("netflix_titles.csv")
 netflix_subs <- read_csv("revenue_subscriber_data.csv")
 
-# convert numbers from 5.9M for ex. to 5900000 for each var
+########
+# Maps #
+########
+
+# convert numbers from 5.9M for ex. to 5900000 for each var in subs and rev
 num <- c(netflix_subs$'# of Subscribers Q1 2021')
 num <- gsub('K', 'e3', num)
 num <- gsub('M', 'e6', num)
-netflix_subs$'# of Subscribers Q1 2021' <- format(as.numeric(num), scientific = FALSE)
+netflix_subs$'# of Subscribers Q1 2021' <- 
+  format(as.numeric(num), scientific = FALSE)
 
-netflix_subs$'# of Subscribers Q1 2021' <- as.numeric(netflix_subs$'# of Subscribers Q1 2021')
+netflix_subs$'# of Subscribers Q1 2021' <- 
+  as.numeric(netflix_subs$'# of Subscribers Q1 2021')
+
+num <- c(netflix_subs$'Q1 2021 Revenue $')
+num <- gsub('K', 'e3', num)
+num <- gsub('M', 'e6', num)
+netflix_subs$'Q1 2021 Revenue $' <- format(as.numeric(num), scientific = FALSE)
+
+netflix_subs$'Q1 2021 Revenue $' <- as.numeric(netflix_subs$'Q1 2021 Revenue $')
+
+num <- c(netflix_subs$'# of Subscribers Q2 2021')
+num <- gsub('K', 'e3', num)
+num <- gsub('M', 'e6', num)
+netflix_subs$'# of Subscribers Q2 2021' <- 
+  format(as.numeric(num), scientific = FALSE)
+
+netflix_subs$'# of Subscribers Q2 2021' <- 
+  as.numeric(netflix_subs$'# of Subscribers Q2 2021')
+
+num <- c(netflix_subs$'Q2 2021 Revenue $')
+num <- gsub('K', 'e3', num)
+num <- gsub('M', 'e6', num)
+netflix_subs$'Q2 2021 Revenue $' <- format(as.numeric(num), scientific = FALSE)
+
+netflix_subs$'Q2 2021 Revenue $' <- as.numeric(netflix_subs$'Q2 2021 Revenue $')
+
+num <- c(netflix_subs$'# of Subscribers Q3 2021 (Estimate)')
+num <- gsub('K', 'e3', num)
+num <- gsub('M', 'e6', num)
+netflix_subs$'# of Subscribers Q3 2021 (Estimate)' <- 
+  format(as.numeric(num), scientific = FALSE)
+
+netflix_subs$'# of Subscribers Q3 2021 (Estimate)' <- 
+  as.numeric(netflix_subs$'# of Subscribers Q3 2021 (Estimate)')
+
+num <- c(netflix_subs$'Q3 2021 Revenue $ (Estimate)')
+num <- gsub('K', 'e3', num)
+num <- gsub('M', 'e6', num)
+netflix_subs$'Q3 2021 Revenue $ (Estimate)' <- 
+  format(as.numeric(num), scientific = FALSE)
+
+netflix_subs$'Q3 2021 Revenue $ (Estimate)' <- 
+  as.numeric(netflix_subs$'Q3 2021 Revenue $ (Estimate)')
+
+num <- c(netflix_subs$'# of Subscribers Q4 2021 (Estimate)')
+num <- gsub('K', 'e3', num)
+num <- gsub('M', 'e6', num)
+netflix_subs$'# of Subscribers Q4 2021 (Estimate)' <- 
+  format(as.numeric(num), scientific = FALSE)
+
+netflix_subs$'# of Subscribers Q4 2021 (Estimate)' <- 
+  as.numeric(netflix_subs$'# of Subscribers Q4 2021 (Estimate)')
+
+num <- c(netflix_subs$'Q4 2021 Revenue $ (Estimate)')
+num <- gsub('K', 'e3', num)
+num <- gsub('M', 'e6', num)
+netflix_subs$'Q4 2021 Revenue $ (Estimate)' <- 
+  format(as.numeric(num), scientific = FALSE)
+
+netflix_subs$'Q4 2021 Revenue $ (Estimate)' <- 
+  as.numeric(netflix_subs$'Q4 2021 Revenue $ (Estimate)')
+
+# filter out all variables except country, show title, type, and ID 
+# from Netflix shows dataset
+
+netflix_map <- netflix_shows %>%
+  select(show_id, type, title, country) %>%
+  # If movies have multiple countries, make a new row for each country
+  unnest_tokens(output = country, input = country, token = "regex", 
+                pattern = c(", ")) %>%
+  # Drop NAs
+  drop_na()
+
+netflix_map_by_country <- netflix_map %>%
+  group_by(country) %>%
+  summarize(number_of_films = n())
+
+
+
+
 

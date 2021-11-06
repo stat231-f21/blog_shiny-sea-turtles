@@ -46,76 +46,10 @@ netflix_subs <- read_csv("data/revenue_subscriber_data.csv")
 # Maps #
 ########
 
-# convert numbers from 5.9M for ex. to 5900000 for each var in subs and rev
-num <- c(netflix_subs$'# of Subscribers Q1 2021')
-num <- gsub('K', 'e3', num)
-num <- gsub('M', 'e6', num)
-netflix_subs$'# of Subscribers Q1 2021' <- 
-  format(as.numeric(num), scientific = FALSE)
+## Netflix subs/revenue dataset ##
+#netflix_subs <- netflix_subs
 
-netflix_subs$'# of Subscribers Q1 2021' <- 
-  as.numeric(netflix_subs$'# of Subscribers Q1 2021')
-
-num <- c(netflix_subs$'Q1 2021 Revenue $')
-num <- gsub('K', 'e3', num)
-num <- gsub('M', 'e6', num)
-netflix_subs$'Q1 2021 Revenue $' <- format(as.numeric(num), scientific = FALSE)
-
-netflix_subs$'Q1 2021 Revenue $' <- as.numeric(netflix_subs$'Q1 2021 Revenue $')
-
-num <- c(netflix_subs$'# of Subscribers Q2 2021')
-num <- gsub('K', 'e3', num)
-num <- gsub('M', 'e6', num)
-netflix_subs$'# of Subscribers Q2 2021' <- 
-  format(as.numeric(num), scientific = FALSE)
-
-netflix_subs$'# of Subscribers Q2 2021' <- 
-  as.numeric(netflix_subs$'# of Subscribers Q2 2021')
-
-num <- c(netflix_subs$'Q2 2021 Revenue $')
-num <- gsub('K', 'e3', num)
-num <- gsub('M', 'e6', num)
-netflix_subs$'Q2 2021 Revenue $' <- format(as.numeric(num), scientific = FALSE)
-
-netflix_subs$'Q2 2021 Revenue $' <- as.numeric(netflix_subs$'Q2 2021 Revenue $')
-
-num <- c(netflix_subs$'# of Subscribers Q3 2021 (Estimate)')
-num <- gsub('K', 'e3', num)
-num <- gsub('M', 'e6', num)
-netflix_subs$'# of Subscribers Q3 2021 (Estimate)' <- 
-  format(as.numeric(num), scientific = FALSE)
-
-netflix_subs$'# of Subscribers Q3 2021 (Estimate)' <- 
-  as.numeric(netflix_subs$'# of Subscribers Q3 2021 (Estimate)')
-
-num <- c(netflix_subs$'Q3 2021 Revenue $ (Estimate)')
-num <- gsub('K', 'e3', num)
-num <- gsub('M', 'e6', num)
-netflix_subs$'Q3 2021 Revenue $ (Estimate)' <- 
-  format(as.numeric(num), scientific = FALSE)
-
-netflix_subs$'Q3 2021 Revenue $ (Estimate)' <- 
-  as.numeric(netflix_subs$'Q3 2021 Revenue $ (Estimate)')
-
-num <- c(netflix_subs$'# of Subscribers Q4 2021 (Estimate)')
-num <- gsub('K', 'e3', num)
-num <- gsub('M', 'e6', num)
-netflix_subs$'# of Subscribers Q4 2021 (Estimate)' <- 
-  format(as.numeric(num), scientific = FALSE)
-
-netflix_subs$'# of Subscribers Q4 2021 (Estimate)' <- 
-  as.numeric(netflix_subs$'# of Subscribers Q4 2021 (Estimate)')
-
-num <- c(netflix_subs$'Q4 2021 Revenue $ (Estimate)')
-num <- gsub('K', 'e3', num)
-num <- gsub('M', 'e6', num)
-netflix_subs$'Q4 2021 Revenue $ (Estimate)' <- 
-  format(as.numeric(num), scientific = FALSE)
-
-netflix_subs$'Q4 2021 Revenue $ (Estimate)' <- 
-  as.numeric(netflix_subs$'Q4 2021 Revenue $ (Estimate)')
-
-# Netflix shows dataset
+## Netflix shows dataset ##
 netflix_map <- netflix_shows %>%
   # filter out all variables except country, show title, type, and ID 
   select(show_id, type, title, country) %>%
@@ -152,6 +86,10 @@ world_map$ID <- tolower(world_map$ID)
 netflix_map_shows <- world_map %>%
   inner_join(netflix_map_by_country, by = "ID")
 
+# rename ID and number_of_viewers
+netflix_map_shows <-
+  rename(Country = ID, 'Amount of Content' =  number_of_films)
+
 # dataset for Netflix shows by country with coordinates: netflix_map_shows
 
 # write netflix_map_by_country to csv (cant write geom to csv?)
@@ -165,7 +103,7 @@ ggplot() +
   theme_void() +
   labs(fill = "Number of Movies/Shows Filmed in Country",
        title = "Countries Netflix Shows/Movies Have Been Filmed In",
-       subtitle = "From 2013 to 2019") +
+       subtitle = "Shows Added From 2013 to 2019") +
   theme(legend.position = "bottom", legend.key.width = unit(2,"cm"))
 
 

@@ -68,6 +68,10 @@ world_map$ID <- tolower(world_map$ID)
 # join world map and movies/shows by country datasets
 netflix_map_shows <- world_map %>%
   inner_join(netflix_map_by_country, by = "ID")
+
+# rename ID and number_of_viewers
+netflix_map_shows <- netflix_map_shows %>%
+  rename(Country = ID, Amount_of_Content =  number_of_films)
 ```
 
 Let's clean up the format of that output instead of using the standard R output:
@@ -95,15 +99,14 @@ ggplot(data = cars, aes(x = speed, y = dist)) +
        subtitle = "Based on 1920s study") +
   theme_classic()
 
-ggplot() +
-  geom_sf(data = netflix_map_shows, aes(fill = number_of_films)) +
+ggplotly(ggplot() +
+  geom_sf(data = world_map, fill = NA) + 
+  geom_sf(data = netflix_map_shows, aes(fill = Amount_of_Content, label = Country)) +
   scale_fill_viridis(option = "viridis", direction = -1) +
-  geom_sf(data = world_map, fill = NA, color = "black") +
   theme_void() +
-  labs(fill = "Number of Movies/Shows Filmed in Country",
-       title = "Countries Netflix Shows/Movies Have Been Filmed In",
-       subtitle = "From 2013 to 2019") +
-  theme(legend.position = "bottom", legend.key.width = unit(2,"cm"))
+  labs(fill = "Amount of Content",
+       title = "Countries Netflix Content Has Been Filmed In (From 2013 to 2019)") +
+  theme(legend.position = "bottom", legend.key.width = unit(.5,"cm")))
 ```
 
 Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 

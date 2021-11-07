@@ -41,6 +41,11 @@ shows_info_data <- tibble(show_info = shows_info)
 
 netflix_shows <- read_csv("data/netflix_titles.csv")
 netflix_subs <- read_csv("data/revenue_subscriber_data.csv")
+bridgerton <- read.csv("data/bridgerton.csv", sep=",", header = FALSE)
+squidgame <- read.csv("data/squidgame.csv", sep=",", header = FALSE)
+moneyheist <- read.csv("data/moneyheist.csv", sep=",", header = FALSE)
+strangerthings <- read.csv("data/strangerthings.csv", sep=",", header = FALSE)
+thirteenreasons <- read.csv("data/thirteenreasons.csv", sep=",", header = FALSE)
 
 ########
 # Maps #
@@ -110,7 +115,7 @@ netflix_subs$ID <- tolower(netflix_subs$ID)
 # Make all variable names have _ instead of spaces
 names(netflix_subs)<- str_replace_all(names(netflix_subs), c(" " = "_", 
                                                              "#" = "Number")) 
-
+# Make Number of Subscribers be in thousands of people
 netflix_subs <- netflix_subs %>%
   mutate(Number_of_Subscribers = Number_of_Subscribers_Q2_2021/1000)
 
@@ -124,5 +129,88 @@ netflix_subs_map <- netflix_subs_map %>%
 
 # write netflix_subs to csv (cant write geom to csv?)
 write.csv(netflix_subs, file = 'netflix_subs_map.csv')
+
+## Netflix show popularity datasets ##
+
+# Rename variables
+bridgerton <- bridgerton %>%
+  rename(ID = V1, Bridgerton = V2)
+squidgame <- squidgame %>%
+  rename(ID = V1, SquidGame = V2)
+moneyheist <- moneyheist %>%
+  rename(ID = V1, MoneyHeist = V2)
+strangerthings <- strangerthings %>%
+  rename(ID = V1, StrangerThings = V2)
+thirteenreasons <- thirteenreasons %>%
+  rename(ID = V1, ThirteenReasonsWhy = V2)
+
+# Delete first two rows of each set
+bridgerton <- bridgerton[-c(1, 2), ]
+squidgame <- squidgame[-c(1, 2), ]
+moneyheist <- moneyheist[-c(1, 2), ]
+strangerthings <- strangerthings[-c(1, 2), ]
+thirteenreasons <- thirteenreasons[-c(1, 2), ]
+
+# Join datasets of show popularity
+shows_popularity_master <- bridgerton %>% 
+  left_join(squidgame) %>%
+  left_join(., moneyheist) %>%
+  left_join(., strangerthings) %>%
+  left_join(., thirteenreasons)
+
+shows_popularity_master <- shows_popularity_master %>%
+  # Convert variables to be treated as numbers instead of characters
+  mutate(Bridgerton = as.numeric(Bridgerton), SquidGame = as.numeric(SquidGame), 
+         MoneyHeist = as.numeric(MoneyHeist), 
+         StrangerThings = as.numeric(StrangerThings), 
+         ThirteenReasonsWhy = as.numeric(ThirteenReasonsWhy))
+
+# Set NAs to be 0
+shows_popularity_master[is.na(shows_popularity_master)] <- 0
+
+# Convert data to long format
+shows_popularity_master_long <- shows_popularity_master %>%
+  pivot_longer(
+    cols = "Bridgerton" : "ThirteenReasonsWhy",
+    names_to = "Show",
+    values_to = "PopularityScore")
+
+# Get most popular show for each country
+most_popular_show <- shows_popularity_master_long %>% 
+  group_by(ID) %>% 
+  top_n(1, PopularityScore) %>%
+  slice(which.max(PopularityScore))
+
+# Delete countries with a most popular show with a score of 0
+most_popular_show <- most_popular_show[most_popular_show$PopularityScore != 0, ]
+
+# change country names to match country names in world map data
+most_popular_show$ID[most_popular_show$ID == "Myanmar (Burma)"] <- "myanmar"
+most_popular_show$ID[most_popular_show$ID == "United States"] <- "usa"
+most_popular_show$ID[most_popular_show$ID == "United Kingdom"] <- "uk"
+most_popular_show$ID[most_popular_show$ID 
+                     == "Bosnia & Herzegovina"] <- "bosnia and herzegovina"
+most_popular_show$ID[most_popular_show$ID == "Trinidad & Tobago"] <- "trinidad"
+most_popular_show$ID[most_popular_show$ID == "Czechia"] <- "czech republic"
+
+# Duplicate Trinidad row to make a separate row for Tobago
+most_popular_show <- rbind(most_popular_show, most_popular_show[rep(81, 1), ])
+
+# Rename ID of Trinidad to Tobago to have a row for each of them
+most_popular_show$ID[94] <- "tobago"
+
+# Make the IDs lowercase to match other dataset
+most_popular_show$ID <- tolower(most_popular_show$ID)
+
+# Join world map and popular show datasets
+netflix_popular_show_map <- world_map %>%
+  inner_join(most_popular_show, by = "ID")
+
+# rename ID
+netflix_popular_show_map <- netflix_popular_show_map %>%
+  rename(Country = ID)
+
+# write most_popular_show to csv (cant write geom to csv?)
+write.csv(most_popular_show, file = 'most_popular_show_map.csv')
 
 

@@ -54,10 +54,11 @@ You should test out updating your GitHub Pages website:
 
 You can embed code as normal, for example:
 
-```{r cars}
-summary(cars)
+```{r map extra wrangling}
+## Quick extra wrangling for map data ##
 netflix_map_by_country <- read_csv(file = 'netflix_map_by_country.csv')
 netflix_subs_map <- read_csv(file = 'netflix_subs_map.csv')
+most_popular_show <- read_csv(file = 'most_popular_show_map.csv')
 
 # load in world map data
 world_map <- maps::map("world", plot = FALSE, fill = TRUE) %>% 
@@ -80,6 +81,14 @@ netflix_subs_map <- world_map %>%
 
 # rename ID
 netflix_subs_map <- netflix_subs_map %>%
+  rename(Country = ID)
+
+# Join world map and popular show datasets
+netflix_popular_show_map <- world_map %>%
+  inner_join(most_popular_show, by = "ID")
+
+# rename ID
+netflix_popular_show_map <- netflix_popular_show_map %>%
   rename(Country = ID)
 ```
 

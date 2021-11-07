@@ -163,17 +163,16 @@ ggplotly(ggplot() +
                                        label2= Country)) + 
   theme_void() +
   labs(fill = "Show") +
-  theme(legend.key.width = unit(.25,"cm"), 
-        panel.background = element_rect(fill = "aliceblue")) + 
+  theme(panel.background = element_rect(fill = "aliceblue")) + 
   coord_sf(xlim = c(-180, 190), expand = FALSE), 
   height = 450) %>%
-  layout(title = list(text = paste0('<br>',
-                                    'Netflix Show Popularity',
-                                    '<br>',
-                                    '<sup>',
-                                    'Since the Debut of Each Show; 
-                                    From Google Trends',
-                                    '</sup>')))
+  layout(title = list(
+    text = paste0('<br>',
+                  'Netflix Show Popularity',
+                  '<br>',
+                  '<sup>',
+                  'Since the Debut of Each Show; From Google Trends',
+                  '</sup>')))
 
 ```
 

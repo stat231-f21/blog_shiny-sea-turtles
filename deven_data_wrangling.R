@@ -46,9 +46,6 @@ netflix_subs <- read_csv("data/revenue_subscriber_data.csv")
 # Maps #
 ########
 
-## Netflix subs/revenue dataset ##
-#netflix_subs <- netflix_subs
-
 ## Netflix shows dataset ##
 netflix_map <- netflix_shows %>%
   # filter out all variables except country, show title, type, and ID 
@@ -88,24 +85,44 @@ netflix_map_shows <- world_map %>%
 
 # rename ID and number_of_viewers
 netflix_map_shows <-
-  rename(Country = ID, 'Amount of Content' =  number_of_films)
+  rename(Country = ID, 'Amount_of_Content' =  number_of_films)
 
 # dataset for Netflix shows by country with coordinates: netflix_map_shows
 
 # write netflix_map_by_country to csv (cant write geom to csv?)
 write.csv(netflix_map_by_country, file = 'netflix_map_by_country.csv')
 
-# draft plot of shows/movies by country
-ggplot() +
-  geom_sf(data = netflix_map_shows, aes(fill = number_of_films)) +
-  scale_fill_viridis(option = "viridis", direction = -1) +
-  geom_sf(data = world_map, fill = NA, color = "black") +
-  theme_void() +
-  labs(fill = "Number of Movies/Shows Filmed in Country",
-       title = "Countries Netflix Shows/Movies Have Been Filmed In",
-       subtitle = "Shows Added From 2013 to 2019") +
-  theme(legend.position = "bottom", legend.key.width = unit(2,"cm"))
+## Netflix subs/revenue dataset ##
 
+# Rename country to ID to match world map data
+netflix_subs <- netflix_subs %>%
+  rename(ID = Country)
 
+# change country names to match country names in world map data
+netflix_subs$ID[netflix_subs$ID == "UAE"] <- "united arab emirates"
+netflix_subs$ID[netflix_subs$ID == "United States"] <- "usa"
+netflix_subs$ID[netflix_subs$ID == "United Kingdom"] <- "uk"
+netflix_subs$ID[netflix_subs$ID == "Slovak Republic"] <- "slovakia"
+
+# Make the IDs lowercase to match other dataset
+netflix_subs$ID <- tolower(netflix_subs$ID)
+
+# Make all variable names have _ instead of spaces
+names(netflix_subs)<- str_replace_all(names(netflix_subs), c(" " = "_", 
+                                                             "#" = "Number")) 
+
+netflix_subs <- netflix_subs %>%
+  mutate(Number_of_Subscribers = Number_of_Subscribers_Q2_2021/1000)
+
+# Join world map and subs/revenue datasets
+netflix_subs_map <- world_map %>%
+  inner_join(netflix_subs, by = "ID")
+
+# rename ID
+netflix_subs_map <- netflix_subs_map %>%
+  rename(Country = ID)
+
+# write netflix_subs to csv (cant write geom to csv?)
+write.csv(netflix_subs, file = 'netflix_subs_map.csv')
 
 

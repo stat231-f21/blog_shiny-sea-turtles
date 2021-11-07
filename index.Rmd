@@ -57,6 +57,7 @@ You can embed code as normal, for example:
 ```{r cars}
 summary(cars)
 netflix_map_by_country <- read_csv(file = 'netflix_map_by_country.csv')
+netflix_subs_map <- read_csv(file = 'netflix_subs_map.csv')
 
 # load in world map data
 world_map <- maps::map("world", plot = FALSE, fill = TRUE) %>% 
@@ -72,6 +73,14 @@ netflix_map_shows <- world_map %>%
 # rename ID and number_of_viewers
 netflix_map_shows <- netflix_map_shows %>%
   rename(Country = ID, Amount_of_Content =  number_of_films)
+
+# Join world map and subs/revenue datasets
+netflix_subs_map <- world_map %>%
+  inner_join(netflix_subs_map, by = "ID")
+
+# rename ID
+netflix_subs_map <- netflix_subs_map %>%
+  rename(Country = ID)
 ```
 
 Let's clean up the format of that output instead of using the standard R output:
@@ -99,14 +108,37 @@ ggplot(data = cars, aes(x = speed, y = dist)) +
        subtitle = "Based on 1920s study") +
   theme_classic()
 
+# Map of Netflix Shows/Films by Country
 ggplotly(ggplot() +
   geom_sf(data = world_map, fill = NA) + 
-  geom_sf(data = netflix_map_shows, aes(fill = Amount_of_Content, label = Country)) +
+  geom_sf(data = netflix_map_shows, 
+          aes(fill = Amount_of_Content, label = Country)) +
   scale_fill_viridis(option = "viridis", direction = -1) +
   theme_void() +
-  labs(fill = "Amount of Content",
-       title = "Countries Netflix Content Has Been Filmed In (From 2013 to 2019)") +
-  theme(legend.position = "bottom", legend.key.width = unit(.5,"cm")))
+  labs(fill = "Films/Shows") +
+  theme(legend.key.width = unit(.5,"cm"))) %>%
+  layout(title = list(text = paste0('<br>',
+                                    'Locations of Filming for Netflix Content',
+                                    '<br>',
+                                    '<sup>',
+                                    'From 2013 to 2019',
+                                    '</sup>')))
+
+# Map of Netflix Subscribers by Country
+ggplotly(ggplot() +
+  geom_sf(data = world_map, fill = NA) + 
+  geom_sf(data = netflix_subs_map, aes(fill = Number_of_Subscribers, 
+                                       label = Country)) +
+  scale_fill_viridis(option = "viridis", direction = -1) +
+  theme_void() +
+  labs(fill = "Subscribers") +
+  theme(legend.key.width = unit(.5,"cm"))) %>%
+  layout(title = list(text = paste0('<br>',
+                                    'Netflix Subscribers',
+                                    '<br>',
+                                    '<sup>',
+                                    'As of Q2 2021; In Thousands of People',
+                                    '</sup>')))
 ```
 
 Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 

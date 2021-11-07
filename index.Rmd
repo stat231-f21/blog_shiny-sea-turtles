@@ -155,6 +155,25 @@ ggplotly(ggplot() +
                                     'As of Q2 2021; In Thousands of People',
                                     '</sup>')))
 
+# Map of Netflix Show Popularity by Country
+ggplotly(ggplot() +
+  geom_sf(data = world_map, fill = "white") + 
+  geom_sf(data = netflix_popular_show_map, aes(fill = Show, 
+                                       label = PopularityScore)) + 
+  theme_void() +
+  labs(fill = "Show") +
+  theme(legend.key.width = unit(.25,"cm"), 
+        panel.background = element_rect(fill = "aliceblue")) + 
+  coord_sf(xlim = c(-180, 190), expand = FALSE), 
+  height = 450) %>%
+  layout(title = list(text = paste0('<br>',
+                                    'Netflix Show Popularity',
+                                    '<br>',
+                                    '<sup>',
+                                    'Since the Debut of Each Show; 
+                                    From Google Trends',
+                                    '</sup>')))
+
 ```
 
 Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 

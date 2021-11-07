@@ -145,6 +145,7 @@ ggplotly(ggplot() +
                                     '<sup>',
                                     'As of Q2 2021; In Thousands of People',
                                     '</sup>')))
+
 ```
 
 Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 

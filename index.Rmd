@@ -159,7 +159,8 @@ ggplotly(ggplot() +
 ggplotly(ggplot() +
   geom_sf(data = world_map, fill = "white") + 
   geom_sf(data = netflix_popular_show_map, aes(fill = Show, 
-                                       label = PopularityScore)) + 
+                                       label = PopularityScore, 
+                                       label2= Country)) + 
   theme_void() +
   labs(fill = "Show") +
   theme(legend.key.width = unit(.25,"cm"), 

@@ -25,17 +25,25 @@ shows <- url_html %>%
   html_elements("h4 em") %>%
   html_text()
 
-shows_labels <- url_html %>%
-  html_elements("p strong") %>%
-  html_text()
-
 shows_info <- url_html %>%
-  html_elements("div p") %>%
+  html_elements("div p ") %>%
+  html_text() %>%
+  tolower()
+
+test <- url_html %>%
+  html_elements("div.entry div.entry-inner p") %>%
   html_text()
 
 shows_data <- tibble(show = shows)
-shows_label_data <- tibble(show_labels = shows_labels)
 shows_info_data <- tibble(show_info = shows_info)
+
+shows_info_data_new <- str_extract(shows_info_data$show_info, 
+                                   "number of viewers: .*[:digit:]$")
+
+shows_info_data_final <- tibble(shows_info_data_new = shows_info_data_new)
+
+shows_info_data_final <- shows_info_data_final%>%
+  drop_na()
 
 # reading in csv
 
@@ -165,6 +173,30 @@ shows_popularity_master <- shows_popularity_master %>%
          StrangerThings = as.numeric(StrangerThings), 
          ThirteenReasonsWhy = as.numeric(ThirteenReasonsWhy))
 
+# change some country names to match country names in world map data
+shows_popularity_master$ID[shows_popularity_master$ID 
+                           == "Myanmar (Burma)"] <- "myanmar"
+shows_popularity_master$ID[shows_popularity_master$ID 
+                           == "United States"] <- "usa"
+shows_popularity_master$ID[shows_popularity_master$ID 
+                           == "United Kingdom"] <- "uk"
+shows_popularity_master$ID[shows_popularity_master$ID 
+                     == "Bosnia & Herzegovina"] <- "bosnia and herzegovina"
+shows_popularity_master$ID[shows_popularity_master$ID 
+                           == "Trinidad & Tobago"] <- "trinidad"
+shows_popularity_master$ID[shows_popularity_master$ID 
+                           == "Czechia"] <- "czech republic"
+
+# Duplicate Trinidad row to make a separate row for Tobago
+shows_popularity_master <- rbind(shows_popularity_master, 
+                                 shows_popularity_master[rep(8, 1), ])
+
+# Rename ID of Trinidad to Tobago to have a row for each of them
+shows_popularity_master$ID[251] <- "tobago"
+
+# Make the IDs lowercase to match other dataset
+shows_popularity_master$ID <- tolower(shows_popularity_master$ID)
+
 # Set NAs to be 0
 shows_popularity_master[is.na(shows_popularity_master)] <- 0
 
@@ -172,7 +204,7 @@ shows_popularity_master[is.na(shows_popularity_master)] <- 0
 shows_popularity_master_long <- shows_popularity_master %>%
   pivot_longer(
     cols = "Bridgerton" : "ThirteenReasonsWhy",
-    names_to = "Show",
+    names_to = "Most_Popular_Show",
     values_to = "PopularityScore")
 
 # Get most popular show for each country
@@ -184,33 +216,19 @@ most_popular_show <- shows_popularity_master_long %>%
 # Delete countries with a most popular show with a score of 0
 most_popular_show <- most_popular_show[most_popular_show$PopularityScore != 0, ]
 
-# change country names to match country names in world map data
-most_popular_show$ID[most_popular_show$ID == "Myanmar (Burma)"] <- "myanmar"
-most_popular_show$ID[most_popular_show$ID == "United States"] <- "usa"
-most_popular_show$ID[most_popular_show$ID == "United Kingdom"] <- "uk"
-most_popular_show$ID[most_popular_show$ID 
-                     == "Bosnia & Herzegovina"] <- "bosnia and herzegovina"
-most_popular_show$ID[most_popular_show$ID == "Trinidad & Tobago"] <- "trinidad"
-most_popular_show$ID[most_popular_show$ID == "Czechia"] <- "czech republic"
-
-# Duplicate Trinidad row to make a separate row for Tobago
-most_popular_show <- rbind(most_popular_show, most_popular_show[rep(81, 1), ])
-
-# Rename ID of Trinidad to Tobago to have a row for each of them
-most_popular_show$ID[94] <- "tobago"
-
-# Make the IDs lowercase to match other dataset
-most_popular_show$ID <- tolower(most_popular_show$ID)
+# Join most popular show and all shows datasets
+shows_popularity_full <- most_popular_show %>% 
+  left_join(shows_popularity_master)
 
 # Join world map and popular show datasets
 netflix_popular_show_map <- world_map %>%
-  inner_join(most_popular_show, by = "ID")
+  inner_join(shows_popularity_full, by = "ID")
 
 # rename ID
 netflix_popular_show_map <- netflix_popular_show_map %>%
-  rename(Country = ID)
+  rename(Country = ID) 
 
 # write most_popular_show to csv (cant write geom to csv?)
-write.csv(most_popular_show, file = 'most_popular_show_map.csv')
+write.csv(shows_popularity_full, file = 'most_popular_show_map.csv')
 
 

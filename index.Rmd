@@ -134,7 +134,8 @@ ggplotly(ggplot() +
                                     '<br>',
                                     '<sup>',
                                     'From 2013 to 2019',
-                                    '</sup>')))
+                                    '</sup>'), 
+                      xref = "paper", xanchor = "center"))
 
 # Map of Netflix Subscribers by Country
 ggplotly(ggplot() +
@@ -153,14 +154,19 @@ ggplotly(ggplot() +
                                     '<br>',
                                     '<sup>',
                                     'As of Q2 2021; In Thousands of People',
-                                    '</sup>')))
+                                    '</sup>'), 
+                      xref = "paper", xanchor = "center"))
 
 # Map of Netflix Show Popularity by Country
 ggplotly(ggplot() +
   geom_sf(data = world_map, fill = "white") + 
-  geom_sf(data = netflix_popular_show_map, aes(fill = Show, 
-                                       label = PopularityScore, 
-                                       label2= Country)) + 
+  geom_sf(data = netflix_popular_show_map, aes(fill = Most_Popular_Show, 
+                                               label= Country,
+                                               label2 = Bridgerton, 
+                                               label3 = SquidGame,
+                                               label4 = MoneyHeist,
+                                               label5 = StrangerThings,
+                                               label6 = ThirteenReasonsWhy)) + 
   theme_void() +
   labs(fill = "Show") +
   theme(panel.background = element_rect(fill = "aliceblue")) + 
@@ -171,8 +177,8 @@ ggplotly(ggplot() +
                   'Netflix Show Popularity',
                   '<br>',
                   '<sup>',
-                  'Since the Debut of Each Show; From Google Trends',
-                  '</sup>')))
+                  'Since the Debut of Each Show; Score from Google Trends',
+                  '</sup>'), xref = "paper", xanchor = "center"))
 
 ```
 

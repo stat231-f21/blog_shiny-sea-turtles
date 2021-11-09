@@ -54,6 +54,7 @@ squidgame <- read.csv("data/squidgame.csv", sep=",", header = FALSE)
 moneyheist <- read.csv("data/moneyheist.csv", sep=",", header = FALSE)
 strangerthings <- read.csv("data/strangerthings.csv", sep=",", header = FALSE)
 thirteenreasons <- read.csv("data/thirteenreasons.csv", sep=",", header = FALSE)
+all_stream_shows <- read_csv("data/MoviesOnStreamingPlatforms_updated.csv")
 
 ########
 # Maps #
@@ -230,5 +231,7 @@ netflix_popular_show_map <- netflix_popular_show_map %>%
 
 # write most_popular_show to csv (cant write geom to csv?)
 write.csv(shows_popularity_full, file = 'most_popular_show_map.csv')
+
+## Shows/Films on all streaming platforms dataset ##
 
 

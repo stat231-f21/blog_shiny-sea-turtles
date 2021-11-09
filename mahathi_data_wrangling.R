@@ -4,6 +4,10 @@ library(tidyverse)
 library(kableExtra)
 library(tidyr)
 library(dplyr)
+library(stringr)
+
+# read in csv
+netflix_titles <- read_csv("data/netflix_titles.csv")
 
 # filtering out observations that are NA for both cast and director, and then for cast
 
@@ -41,3 +45,7 @@ final2 <- final %>% arrange(title) %>%
   filter(!is.na(people)) %>%
   select(-c(cast,director)) %>%
   distinct()
+  
+final2$people <- trimws(final2$people, which = c("left"))
+
+  

@@ -3,6 +3,11 @@ library(kableExtra)
 library(ggnetwork)
 library(igraph)
 
+# read in csv files
+
+final3 <- read_csv("data/final3.csv")
+final4 <- read_csv("data/final4.csv")
+
 # create a table of crossproducts between actors by movie
 final5 <- final4 %>%
   select(title, people) %>%

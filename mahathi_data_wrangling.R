@@ -10,13 +10,11 @@ library(stringr)
 netflix_titles <- read_csv("data/netflix_titles.csv")
 
 # filtering out observations that are NA for both cast and director, and then for cast
-
 netflix_titles_1 <- netflix_titles %>%
   filter(!(is.na(director) & is.na(cast))) %>%
   filter(!is.na(cast))
 
 # create separate rows for each director / cast member
-
 netflix_titles_1 <- netflix_titles_1 %>%
   mutate(director = strsplit(as.character(director), ",")) %>%
   unnest(director)
@@ -26,7 +24,6 @@ netflix_titles_1 <- netflix_titles_1 %>%
   unnest(cast)
 
 # create dataframe for directors
-
 directors <- netflix_titles_1 %>%
   # select(-cast) %>%
   rename(people = "director") %>%
@@ -46,8 +43,10 @@ final2 <- final %>% arrange(title) %>%
   select(-c(cast,director)) %>%
   distinct()
   
+# remove white space before each name
 final2$people <- trimws(final2$people, which = c("left"))
 
+# create a new dataset that only includes the actors/directors with the top 20 number of connections
 final3 <- final2 %>%
   count(people, sort = TRUE) %>%
   slice(1:20)

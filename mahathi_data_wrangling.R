@@ -48,4 +48,12 @@ final2 <- final %>% arrange(title) %>%
   
 final2$people <- trimws(final2$people, which = c("left"))
 
+final3 <- final2 %>%
+  count(people, sort = TRUE) %>%
+  slice(1:20)
+
+final4 <- final2 %>%
+  right_join(final3, by = "people")
+  
+
   

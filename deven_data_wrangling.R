@@ -282,9 +282,8 @@ all_stream_shows <- all_stream_shows %>%
                           PrimeVideo == 1 ~ "Prime Video",
                           DisneyPlus == 1 ~ "Disney Plus"))
 
-ggplotly(ggplot(data = all_stream_shows, aes(x = Year, y = IMDb, 
-                                            color = Service, 
-                                            label = Title)) +
+ggplotly(ggplot(data = all_stream_shows, 
+                aes(x = Year, y = IMDb, color = Service, label = Title)) +
            geom_point() +
            labs(title = "Movie/Show IMDb Ratings",
                 x = "Year",

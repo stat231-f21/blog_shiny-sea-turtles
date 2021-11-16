@@ -56,7 +56,7 @@ desc_frequencies <- shows %>%
   anti_join(stop_words, by = "word") %>%
   count(word, sort = TRUE) 
 
-write_csv(scj, "data/wordcloud.csv")
+write_csv(desc_frequencies, "data/wordcloud.csv")
 
 # Word cloud will rearrange each time unless seed is set
 set.seed(53)

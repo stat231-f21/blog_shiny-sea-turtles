@@ -214,13 +214,6 @@ For typesetting equations appropriately, take a look at the *Symbols in math mod
 ```{r}
 desc_frequencies <- read_csv("data/wordcloud.csv")
 
-desc_frequencies <- shows %>%
-  unnest_tokens(output = word, input = description) %>%
-  anti_join(stop_words, by = "word") %>%
-  count(word, sort = TRUE) 
-
-write_csv(desc_frequencies, "data/wordcloud.csv")
-
 # Word cloud will rearrange each time unless seed is set
 set.seed(53)
 

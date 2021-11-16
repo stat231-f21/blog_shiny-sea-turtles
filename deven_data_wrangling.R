@@ -39,10 +39,10 @@ shows_info_data <- tibble(show_info = shows_info)
 shows_info_data1 <- data.frame(show_info = unlist(strsplit(as.character(shows_info_data$show_info), "number of viewers: ")))
 shows_info_data1 <- data.frame(show_info = unlist(strsplit(as.character(shows_info_data1$show_info), "number of viewers:")))
 
-shows_info_data1$show_info <- gsub("~","",as.character(shows_info_data1$show_info))
-shows_info_data1$show_info <- gsub(" million",",000,000",as.character(shows_info_data1$show_info))
-shows_info_data1$show_info <- gsub("\\,000,00\\b",",000,000",as.character(shows_info_data1$show_info))
-shows_info_data1 <- shows_info_data1[!grepl("type",shows_info_data1$show_info),]
+shows_info_data1$show_info <- gsub("~", "", as.character(shows_info_data1$show_info))
+shows_info_data1$show_info <- gsub(" million", ",000,000", as.character(shows_info_data1$show_info))
+shows_info_data1$show_info <- gsub("\\,000,00\\b", ",000,000", as.character(shows_info_data1$show_info))
+shows_info_data1 <- shows_info_data1[!grepl("type", shows_info_data1$show_info),]
 
 shows_info_data1 <- tibble(show_info = shows_info_data1)
 
@@ -260,4 +260,35 @@ write.csv(shows_popularity_full, file = 'most_popular_show_map.csv')
 
 ## Shows/Films on all streaming platforms dataset ##
 
+# Rename some variables
+all_stream_shows <- all_stream_shows %>%
+  rename(RottenTomatoes = 'Rotten Tomatoes', 
+         PrimeVideo = 'Prime Video', DisneyPlus = 'Disney+') %>%
+  select(Year, Title, IMDb, RottenTomatoes, Netflix, Hulu, PrimeVideo, DisneyPlus)
+
+# Remove /10 and /100 from IMDb and RottenTomatoes ratings variables
+all_stream_shows$IMDb <- 
+  str_sub(all_stream_shows$IMDb, 1, nchar(all_stream_shows$IMDb) - 3)
+all_stream_shows$RottenTomatoes <- 
+  str_sub(all_stream_shows$RottenTomatoes, 1, 
+          nchar(all_stream_shows$RottenTomatoes) - 4)
+
+all_stream_shows <- all_stream_shows %>%
+  # Make RottenTomatoes and IMDb ratings seen as numeric
+  mutate(IMDb = as.numeric(IMDb), RottenTomatoes = as.numeric(RottenTomatoes),
+         # Create new variable that says which streaming service each show is on 
+         Service = case_when(Netflix == 1 ~ "Netflix",
+                          Hulu == 1 ~ "Hulu",
+                          PrimeVideo == 1 ~ "Prime Video",
+                          DisneyPlus == 1 ~ "Disney Plus"))
+
+ggplotly(ggplot(data = all_stream_shows, aes(x = Year, y = IMDb, 
+                                            color = Service, 
+                                            label = Title)) +
+           geom_point() +
+           labs(title = "Movie/Show IMDb Ratings",
+                x = "Year",
+                y = "IMDb Rating (Out of 10)",
+                color = "Streaming Platform"))
+  
 

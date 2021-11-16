@@ -1,6 +1,6 @@
 ---
-title: "Your Project Title Here"
-author: "Your Names Here"
+title: "Netflix"
+author: "Kauila, Deven, and Mahathi"
 date: "Add a date"
 output:
   rmdformats::readthedown:
@@ -208,6 +208,41 @@ Equations may be needed if you are explaining a new technique or perhaps providi
 * Display-style (displayed on its own line): $$\frac{\sigma^2_b}{\sigma^2_b + \sigma^2_e}$$
 
 For typesetting equations appropriately, take a look at the *Symbols in math mode* section of this  [cheat sheet](https://users.dickinson.edu/~richesod/latex/latexcheatsheet.pdf)  (or do some extra Googling---there are *many* resources).
+
+# Header 2 (Section heading)
+
+```{r}
+desc_frequencies <- read_csv("data/wordcloud.csv")
+
+desc_frequencies <- shows %>%
+  unnest_tokens(output = word, input = description) %>%
+  anti_join(stop_words, by = "word") %>%
+  count(word, sort = TRUE) 
+
+write_csv(desc_frequencies, "data/wordcloud.csv")
+
+# Word cloud will rearrange each time unless seed is set
+set.seed(53)
+
+# choose color palette from color brewer
+mypal <- brewer.pal(10, "Paired")
+
+wordcloud(words = desc_frequencies$word, 
+          freq = desc_frequencies$n,
+          min.freq = 20,
+          max.words = 75,
+          # plot the words in a random order
+          random.order = TRUE,
+          # specify the range of the size of the words
+          scale = c(2, 0.3),
+          # specify proportion of words with 90 degree rotation
+          rot.per = 0.15,
+          # colors words from least to most frequent
+          colors = mypal,
+          # font family
+          family = "sans")
+
+```
 
 
 # You can even create tabs within your webpage if you want! {.tabset .tabset-fade .tabset-pills}

@@ -30,20 +30,46 @@ shows_info <- url_html %>%
   html_text() %>%
   tolower()
 
-test <- url_html %>%
-  html_elements("div.entry div.entry-inner p") %>%
-  html_text()
-
 shows_data <- tibble(show = shows)
+
+# Missing some show names
+
 shows_info_data <- tibble(show_info = shows_info)
 
-shows_info_data_new <- str_extract(shows_info_data$show_info, 
-                                   "number of viewers: .*[:digit:]$")
+shows_info_data1 <- data.frame(show_info = unlist(strsplit(as.character(shows_info_data$show_info), "number of viewers: ")))
+shows_info_data1 <- data.frame(show_info = unlist(strsplit(as.character(shows_info_data1$show_info), "number of viewers:")))
+
+shows_info_data1$show_info <- gsub("~","",as.character(shows_info_data1$show_info))
+shows_info_data1$show_info <- gsub(" million",",000,000",as.character(shows_info_data1$show_info))
+shows_info_data1$show_info <- gsub("\\,000,00\\b",",000,000",as.character(shows_info_data1$show_info))
+shows_info_data1 <- shows_info_data1[!grepl("type",shows_info_data1$show_info),]
+
+shows_info_data1 <- tibble(show_info = shows_info_data1)
+
+## get weird numbers too
+
+shows_info_data1 <- gsub("(600,000).*","\\1",shows_info_data1$show_info)
+
+shows_info_data1 <- tibble(show_info = shows_info_data1)
+shows_info_data1 <- gsub("(000,000).*","\\1",shows_info_data1$show_info)
+
+shows_info_data1 <- tibble(show_info = shows_info_data1)
+
+shows_info_data_new <- str_extract(shows_info_data1$show_info, 
+                                   ".*[:digit:]$")
 
 shows_info_data_final <- tibble(shows_info_data_new = shows_info_data_new)
 
 shows_info_data_final <- shows_info_data_final%>%
   drop_na()
+
+shows_info_data_final  <- shows_info_data_final [-c(151:161, 37, 39, 43, 46, 51, 
+                                                    53, 55, 57, 59, 61, 63, 64, 
+                                                    66, 68, 70, 75, 77, 82, 84, 
+                                                    85, 98, 99, 100, 102, 103, 
+                                                    105, 107, 113, 115, 117, 
+                                                    118, 122, 124, 126, 128, 
+                                                    130, 136, 142), ]
 
 # reading in csv
 

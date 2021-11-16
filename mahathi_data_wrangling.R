@@ -53,6 +53,9 @@ final3 <- final2 %>%
 
 final4 <- final2 %>%
   right_join(final3, by = "people")
+
+write_csv(final3, "data/final3.csv")
+write_csv(final4, "data/final4.csv")
   
 
   

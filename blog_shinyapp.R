@@ -1,4 +1,24 @@
 # shiny app 
+library(tidyverse)
+library(kableExtra)
+library(robotstxt) 
+library(rvest) 
+library(purrr)
+library(janitor)
+library(tidytext)
+library(wordcloud)
+library(textdata)
+library(sf)
+library(leaflet)
+library(kableExtra)
+library(viridis)
+library(plotly)
+library(ggnetwork)
+library(igraph)
+
+# load data
+
+movies <- read_csv("data/MoviesOnStreamingPlatforms_updated.csv")
 
 
 ui <- navbarPage(

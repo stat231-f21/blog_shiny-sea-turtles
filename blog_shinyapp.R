@@ -1,5 +1,19 @@
 # shiny app 
 
+library(robotstxt) 
+library(rvest) 
+library(purrr)
+library(janitor)
+library(tidytext)
+library(wordcloud)
+library(textdata)
+library(sf)
+library(leaflet)
+library(kableExtra)
+library(viridis)
+library(plotly)
+library(ggnetwork)
+library(igraph)
 
 ui <- navbarPage(
   title = "Who's Watching Netflix?", 
@@ -34,16 +48,16 @@ ui <- navbarPage(
   # Visualization 2: Table
   
   tabPanel(
-    title = "Percentage of Total Biomass",
+    title = "Ratings, Ratings, Ratings",
     
     sidebarLayout(
       sidebarPanel(
-        #radioButtons(inputId = "spcs",
-        #             label = "Choose species:",
-        #             choices = biomass_long$Species,
-        #             selected = "Pink"),
+        (inputId = "spcs",
+                     label = "Choose species:",
+                     choices = biomass_long$Species,
+                     selected = "Pink"),
         
-        sliderInput("yr", "Years:",min = min(biomass_long$Year), max = max(biomass_long$Year), value = c(1970, 2000),sep = "",)
+#        sliderInput("yr", "Years:",min = min(biomass_long$Year), max = max(biomass_long$Year), value = c(1970, 2000),sep = "",)
       ),
       
       

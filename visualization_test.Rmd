@@ -45,6 +45,9 @@ Note that the `echo = FALSE` parameter was added to the code chunk to prevent pr
 
 
 ```{r preliminary data-wrangling}
+final3 <- read_csv("data/final3.csv")
+final4 <- read_csv("data/final4.csv")
+
 final5 <- final4 %>%
   select(title, people) %>%
   table() %>%

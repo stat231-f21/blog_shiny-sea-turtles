@@ -39,10 +39,10 @@ shows_info_data <- tibble(show_info = shows_info)
 shows_info_data1 <- data.frame(show_info = unlist(strsplit(as.character(shows_info_data$show_info), "number of viewers: ")))
 shows_info_data1 <- data.frame(show_info = unlist(strsplit(as.character(shows_info_data1$show_info), "number of viewers:")))
 
-shows_info_data1$show_info <- gsub("~","",as.character(shows_info_data1$show_info))
-shows_info_data1$show_info <- gsub(" million",",000,000",as.character(shows_info_data1$show_info))
-shows_info_data1$show_info <- gsub("\\,000,00\\b",",000,000",as.character(shows_info_data1$show_info))
-shows_info_data1 <- shows_info_data1[!grepl("type",shows_info_data1$show_info),]
+shows_info_data1$show_info <- gsub("~", "", as.character(shows_info_data1$show_info))
+shows_info_data1$show_info <- gsub(" million", ",000,000", as.character(shows_info_data1$show_info))
+shows_info_data1$show_info <- gsub("\\,000,00\\b", ",000,000", as.character(shows_info_data1$show_info))
+shows_info_data1 <- shows_info_data1[!grepl("type", shows_info_data1$show_info),]
 
 shows_info_data1 <- tibble(show_info = shows_info_data1)
 
@@ -260,4 +260,66 @@ write.csv(shows_popularity_full, file = 'most_popular_show_map.csv')
 
 ## Shows/Films on all streaming platforms dataset ##
 
+# Rename some variables
+all_stream_shows <- all_stream_shows %>%
+  rename(RottenTomatoes = 'Rotten Tomatoes', 
+         PrimeVideo = 'Prime Video', DisneyPlus = 'Disney+') %>%
+  select(Year, Title, IMDb, RottenTomatoes, Netflix, Hulu, PrimeVideo, DisneyPlus)
+
+# Remove /10 and /100 from IMDb and RottenTomatoes ratings variables
+all_stream_shows$IMDb <- 
+  str_sub(all_stream_shows$IMDb, 1, nchar(all_stream_shows$IMDb) - 3)
+all_stream_shows$RottenTomatoes <- 
+  str_sub(all_stream_shows$RottenTomatoes, 1, 
+          nchar(all_stream_shows$RottenTomatoes) - 4)
+
+all_stream_shows <- all_stream_shows %>%
+  # Make RottenTomatoes and IMDb ratings seen as numeric
+  mutate(IMDb = as.numeric(IMDb), RottenTomatoes = as.numeric(RottenTomatoes),
+         # Create new variable that says which streaming service each show is on 
+         Service = case_when((Netflix == 1 & Hulu == 0 & PrimeVideo == 0 
+                              & DisneyPlus == 0 ~ "Netflix"),
+                          (Hulu == 1 & Netflix == 0 & PrimeVideo == 0 
+                           & DisneyPlus == 0 ~ "Hulu"),
+                          (PrimeVideo == 1 & Hulu == 0 & Netflix == 0 
+                           & DisneyPlus == 0 ~ "Prime Video"),
+                          (DisneyPlus == 1 & Hulu == 0 & PrimeVideo == 0 
+                           & Netflix == 0 ~ "Disney Plus"),
+                          (DisneyPlus == 1 & Hulu == 1 & PrimeVideo == 0 
+                           & Netflix == 0 ~ "Disney Plus, Hulu"),
+                          (DisneyPlus == 1 & Hulu == 0 & PrimeVideo == 1 
+                           & Netflix == 0 ~ "Disney Plus, Prime Video"),
+                          (DisneyPlus == 1 & Hulu == 0 & PrimeVideo == 0 
+                           & Netflix == 1 ~ "Disney Plus, Netflix"),
+                          (DisneyPlus == 0 & Hulu == 1 & PrimeVideo == 1 
+                           & Netflix == 0 ~ "Hulu, Prime Video"),
+                          (DisneyPlus == 0 & Hulu == 1 & PrimeVideo == 0 
+                           & Netflix == 1 ~ "Hulu, Netflix"),
+                          (DisneyPlus == 0 & Hulu == 0 & PrimeVideo == 1 
+                           & Netflix == 1 ~ "Prime Video, Netflix"),
+                          (DisneyPlus == 1 & Hulu == 1 & PrimeVideo == 1 
+                           & Netflix == 0 ~ "Disney Plus, Hulu, Prime Video"),
+                          (DisneyPlus == 1 & Hulu == 1 & PrimeVideo == 0 
+                           & Netflix == 1 ~ "Disney Plus, Hulu, Netflix"),
+                          (DisneyPlus == 1 & Hulu == 0 & PrimeVideo == 1 
+                           & Netflix == 1 ~ "Disney Plus, Prime Video, Netflix"),
+                          (DisneyPlus == 0 & Hulu == 1 & PrimeVideo == 1
+                           & Netflix == 1 ~ "Hulu, Prime Video, Netflix"),
+                          (DisneyPlus == 1 & Hulu == 1 & PrimeVideo == 1 
+                           & Netflix == 1 
+                           ~ "Disney Plus, Hulu, Prime Video, Netflix")))
+
+write.csv(all_stream_shows, file = 'update_all_platforms.csv')
+
+description_all <- shows %>%
+  unnest_tokens(output = word, input = description)
+
+ggplotly(ggplot(data = all_stream_shows, 
+                aes(x = Year, y = IMDb, color = Service, label = Title)) +
+           geom_point() +
+           labs(title = "Movie/Show IMDb Ratings",
+                x = "Year",
+                y = "IMDb Rating (Out of 10)",
+                color = "Streaming Platform"))
+  
 

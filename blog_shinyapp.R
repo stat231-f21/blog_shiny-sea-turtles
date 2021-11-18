@@ -15,11 +15,6 @@ library(plotly)
 library(ggnetwork)
 library(igraph)
 
-# load data
-
-movies <- read_csv("data/MoviesOnStreamingPlatforms_updated.csv")
-
-
 ui <- navbarPage(
   title = "Who's Watching Netflix?", 
   theme = shinytheme("cyborg"),
@@ -57,12 +52,12 @@ ui <- navbarPage(
     
     sidebarLayout(
       sidebarPanel(
-        #radioButtons(inputId = "spcs",
-        #             label = "Choose species:",
-        #             choices = biomass_long$Species,
-        #             selected = "Pink"),
+        (inputId = "spcs",
+                     label = "Choose species:",
+                     choices = biomass_long$Species,
+                     selected = "Pink"),
         
-        sliderInput("yr", "Years:",min = min(biomass_long$Year), max = max(biomass_long$Year), value = c(1970, 2000),sep = "",)
+#        sliderInput("yr", "Years:",min = min(biomass_long$Year), max = max(biomass_long$Year), value = c(1970, 2000),sep = "",)
       ),
       
       

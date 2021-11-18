@@ -1,6 +1,5 @@
 # shiny app 
-library(tidyverse)
-library(kableExtra)
+
 library(robotstxt) 
 library(rvest) 
 library(purrr)
@@ -54,7 +53,7 @@ ui <- navbarPage(
   # Visualization 2: Table
   
   tabPanel(
-    title = "Percentage of Total Biomass",
+    title = "Ratings, Ratings, Ratings",
     
     sidebarLayout(
       sidebarPanel(

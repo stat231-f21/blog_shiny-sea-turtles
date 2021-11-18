@@ -309,17 +309,54 @@ all_stream_shows <- all_stream_shows %>%
                            & Netflix == 1 
                            ~ "Disney Plus, Hulu, Prime Video, Netflix")))
 
+# Make a duplicate row for each show that is on multiple platforms
+# One platform per row
+platforms_all <- all_stream_shows %>%
+  mutate(Service = strsplit(as.character(Service), ", ")) %>% 
+  unnest(Service)
+
 write.csv(all_stream_shows, file = 'update_all_platforms.csv')
 
-description_all <- shows %>%
-  unnest_tokens(output = word, input = description)
+# Get average IMDb rating for each platform
+platforms_all_avg_IMDb_rating <- platforms_all %>%
+  na.omit(platforms_all$IMDb) %>%
+  group_by(Service) %>%
+  summarise_at(vars(IMDb), list(IMDb = mean))
 
-ggplotly(ggplot(data = all_stream_shows, 
-                aes(x = Year, y = IMDb, color = Service, label = Title)) +
-           geom_point() +
-           labs(title = "Movie/Show IMDb Ratings",
-                x = "Year",
-                y = "IMDb Rating (Out of 10)",
-                color = "Streaming Platform"))
+# Make each average rating have only two decimal points
+platforms_all_avg_IMDb_rating$IMDb <- 
+  format(round(platforms_all_avg_IMDb_rating$IMDb, 2), nsmall = 2)
+
+# Make IMDb a numeric variable
+platforms_all_avg_IMDb_rating <- platforms_all_avg_IMDb_rating %>%
+  mutate(IMDb = as.numeric(IMDb))
+  
+# Get average Rotten Tomatoes rating for each platform
+platforms_all_avg_Rotten_rating <- platforms_all %>%
+  na.omit(platforms_all$RottenTomatoes) %>%
+  group_by(Service) %>%
+  summarise_at(vars(RottenTomatoes), list(RottenTomatoes = mean))
+
+# Make each average rating have only two decimal points
+platforms_all_avg_Rotten_rating$RottenTomatoes <- 
+  format(round(platforms_all_avg_Rotten_rating$RottenTomatoes, 2), nsmall = 2)
+
+# Make RottenTomatoes a numeric variable
+platforms_all_avg_Rotten_rating <- platforms_all_avg_Rotten_rating %>%
+  mutate(RottenTomatoes = as.numeric(RottenTomatoes))
+
+ggplotly(ggplot(data = platforms_all_avg_IMDb_rating, 
+                aes(x = Service, y = IMDb)) +
+           geom_bar(stat='identity', fill = "#FF6666") +
+           labs(title = "Average IMDb Ratings of Shows By Platform",
+                x = "Platform",
+                y = "Average IMDb Rating (Out of 10)"))
+
+ggplotly(ggplot(data = platforms_all_avg_Rotten_rating, 
+                aes(x = Service, y = RottenTomatoes)) +
+           geom_bar(stat='identity', fill = "#FF6666") +
+           labs(title = "Average Rotten Tomatoes Ratings of Shows By Platform",
+                x = "Platform",
+                y = "Average IMDb Rating (Out of 10)"))
   
 

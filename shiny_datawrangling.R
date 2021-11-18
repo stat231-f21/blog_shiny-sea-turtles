@@ -3,8 +3,7 @@
 library(tidyverse)
 library(kableExtra)
 
-movies <- read_csv("data/MoviesOnStreamingPlatforms_updated.csv")
+movies <- read_csv("update_all_platforms.csv")
 
 mtables <- movies %>%
-  select(Title, Year, Age, IMDb, `Rotten Tomatoes`, Netflix, Hulu, `Prime Video`, `Disney+`) %>%
-  arrange(Year)
+  select(Year, Title, IMDb, RottenTomatoes, Service) 

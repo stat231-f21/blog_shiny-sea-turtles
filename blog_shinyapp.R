@@ -15,6 +15,9 @@ library(plotly)
 library(ggnetwork)
 library(igraph)
 
+cb_choices <- unique(mtables$Service)
+si_choices <- unique(mtables$Year)
+
 ui <- navbarPage(
   title = "Who's Watching Netflix?", 
   theme = shinytheme("cyborg"),
@@ -52,12 +55,13 @@ ui <- navbarPage(
     
     sidebarLayout(
       sidebarPanel(
-        (inputId = "spcs",
-                     label = "Choose species:",
-                     choices = biomass_long$Species,
-                     selected = "Pink"),
+        checkboxInput(inputId = "streamingservice",
+                     label = "Select Streaming Service:",
+                     choices = cb_choices,
+                     selected = "Netflix",
+                     inline = TRUE),
         
-#        sliderInput("yr", "Years:",min = min(biomass_long$Year), max = max(biomass_long$Year), value = c(1970, 2000),sep = "",)
+        sliderInput("yr", "Years:",min = min(si_choices), max = max(si_choices), value = c(1914, 2021),sep = "",)
       ),
       
       
@@ -99,7 +103,7 @@ server <- function(input, output){
   # Visualization 3
   
   output$table <- DT::renderDataTable({
-    dt <- biomass_long[biomass_long$Year >= input$yr[1] & biomass_long$Year <= input$yr[2],]
+    dt <- mtables[mtables$Year >= input$yr[1] & mtables$Year <= input$yr[2],]
   })
   
   

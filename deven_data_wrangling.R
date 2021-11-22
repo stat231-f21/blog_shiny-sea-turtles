@@ -260,11 +260,13 @@ write.csv(shows_popularity_full, file = 'most_popular_show_map.csv')
 
 ## Shows/Films on all streaming platforms dataset ##
 
-# Rename some variables
 all_stream_shows <- all_stream_shows %>%
+  # Rename some variables
   rename(RottenTomatoes = 'Rotten Tomatoes', 
          PrimeVideo = 'Prime Video', DisneyPlus = 'Disney+') %>%
-  select(Year, Title, IMDb, RottenTomatoes, Netflix, Hulu, PrimeVideo, DisneyPlus)
+  # Kepp select variables
+  select(Year, Title, IMDb, RottenTomatoes, Netflix, Hulu, PrimeVideo, 
+         DisneyPlus, Genres)
 
 # Remove /10 and /100 from IMDb and RottenTomatoes ratings variables
 all_stream_shows$IMDb <- 
@@ -315,7 +317,19 @@ platforms_all <- all_stream_shows %>%
   mutate(Service = strsplit(as.character(Service), ", ")) %>% 
   unnest(Service)
 
-write.csv(all_stream_shows, file = 'update_all_platforms.csv')
+# Make a duplicate row for each show that has multiple genres
+# One genre per row
+platforms_all_genre <- platforms_all %>%
+  mutate(Genres = strsplit(as.character(Genres), ",")) %>% 
+  unnest(Genres)
+
+write.csv(platforms_all, file = 'shows_by_platform_genre.csv')
+
+# Get average IMDb rating for each platform
+platforms_all_genre_rating <- platforms_all_genre %>%
+  na.omit(platforms_all_genre$IMDb, platforms_all_genre$Genres) %>%
+  group_by(Service, Genres) %>%
+  summarise_at(vars(IMDb), list(IMDb = mean))
 
 # Get average IMDb rating for each platform
 platforms_all_avg_IMDb_rating <- platforms_all %>%

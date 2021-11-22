@@ -1,4 +1,4 @@
-library(robotstxt) 
+library(tidyverse) 
 library(rvest) 
 library(purrr)
 library(janitor)
@@ -12,15 +12,16 @@ library(viridis)
 library(plotly)
 library(ggnetwork)
 library(igraph)
+library(shinythemes)
 
-mtables <- read_csv("update_all_platforms.csv")
+mtables <- read_csv("data/mtables.csv")
 
 cb_choices <- unique(mtables$Service)
 si_choices <- unique(mtables$Year)
 
 ui <- navbarPage(
   title = "Who's Watching Netflix?", 
-  theme = shinytheme("cyborg"),
+  theme = shinytheme("sandstone"),
   
   # # Visualization 1: Time Series
   # tabPanel(
@@ -55,10 +56,10 @@ ui <- navbarPage(
     
     sidebarLayout(
       sidebarPanel(
-        checkboxInput(inputId = "streamingservice",
-                      label = "Select Streaming Service:",
-                      choices = cb_choices,
-                      selected = "Netflix"),
+#        checkboxInput(inputId = "streamingservice",
+#                      label = "Select Streaming Service:",
+#                      choices = cb_choices,
+#                      selected = "Netflix"),
         
         sliderInput("yr", "Years:",min = min(si_choices), max = max(si_choices), value = c(1914, 2021),sep = "",)
       ),
@@ -102,7 +103,10 @@ server <- function(input, output){
   # Visualization 3
 
   output$table <- DT::renderDataTable({
-    dt <- mtables[mtables$Year >= input$yr[1] & mtables$Year <= input$yr[2],]
+#    addCheckboxButtons <- paste0('<input type="checkbox" name="row', cb_choices, '" Streaming Service="', cb_choices, '">',"")
+#    cbind(Pick=addCheckboxButtons, mtables[, input$streamingservice, drop=FALSE])
+    dt <- mtables[mtables$Year >= input$yr[1] & mtables$Year <= input$yr[2],] 
+
   })
   
   

@@ -390,10 +390,3 @@ ggplotly(ggplot(data = platforms_all_avg_Rotten_rating,
                 x = "Platform",
                 y = "Average IMDb Rating (Out of 10)"))
 
-ggplotly(ggplot(data = platforms_all_genre_rating, 
-                aes(x = Genres, y = IMDb, fill = Service)) +
-           geom_bar(stat='identity') +
-           labs(title = "Average IMDb Ratings of Shows By Genre",
-                x = "Genre",
-                y = "Average IMDb Rating (Out of 10)"))
-

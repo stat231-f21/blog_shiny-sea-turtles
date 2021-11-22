@@ -16,7 +16,7 @@ library(shinythemes)
 
 mtables <- read_csv("data/mtables.csv")
 
-cb_choices <- unique(mtables$Service)
+#cb_choices <- unique(mtables$Service)
 si_choices <- unique(mtables$Year)
 
 ui <- navbarPage(
@@ -61,7 +61,11 @@ ui <- navbarPage(
 #                      choices = cb_choices,
 #                      selected = "Netflix"),
         
-        sliderInput("yr", "Years:",min = min(si_choices), max = max(si_choices), value = c(1914, 2021),sep = "",)
+        sliderInput("yr", "Years:",min = min(si_choices), max = max(si_choices), value = c(1914, 2021),sep = "",),
+        sliderInput("imdb", "IMDb Rating:",min = 0, max = 10, value = c(0, 10),sep = "",),
+        sliderInput("rottentom", "Rotten Tomatoes Rating",min = 0, max = 100, value = c(0, 100),sep = "",),
+      
+      
       ),
       
       
@@ -105,7 +109,9 @@ server <- function(input, output){
   output$table <- DT::renderDataTable({
 #    addCheckboxButtons <- paste0('<input type="checkbox" name="row', cb_choices, '" Streaming Service="', cb_choices, '">',"")
 #    cbind(Pick=addCheckboxButtons, mtables[, input$streamingservice, drop=FALSE])
-    dt <- mtables[mtables$Year >= input$yr[1] & mtables$Year <= input$yr[2],] 
+    dt1 <- mtables[mtables$Year >= input$yr[1] & mtables$Year <= input$yr[2],] 
+    dt2 <- mtables[mtables$IMDb >= input$imdb[1] & mtables$IMDb <= input$imdb[2],] 
+    dt3 <- mtables[mtables$RottenTomatoes >= input$rottentom[1] & mtables$RottenTomatoes <= input$rottentom[2],] 
 
   })
   

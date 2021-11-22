@@ -329,13 +329,16 @@ platforms_all_genre_rating <- platforms_all_genre %>%
   group_by(Service, Genres) %>%
   summarise_at(vars(IMDb), list(IMDb = mean))
 
-ggplotly(ggplot(data = platforms_all_genre_rating, 
-                aes(x = Genres, y = IMDb, fill = Service)) +
-           geom_bar(stat='identity') +
-           labs(title = "Average IMDb Ratings of Shows By Genre",
-                x = "Genre",
-                y = "Average IMDb Rating (Out of 10)"))
+# Make each average rating have only two decimal points
+platforms_all_genre_rating$IMDb <- 
+  format(round(platforms_all_genre_rating$IMDb, 2), nsmall = 2)
 
+# Make IMDb a numeric variable
+platforms_all_genre_rating <- platforms_all_genre_rating %>%
+  mutate(IMDb = as.numeric(IMDb))
+
+# write platforms_all_genre_rating to csv
+write.csv(platforms_all_genre_rating, file = 'platforms_all_genre_rating.csv')
 
 # Get average IMDb rating for each platform
 platforms_all_avg_IMDb_rating <- platforms_all %>%
@@ -350,6 +353,10 @@ platforms_all_avg_IMDb_rating$IMDb <-
 # Make IMDb a numeric variable
 platforms_all_avg_IMDb_rating <- platforms_all_avg_IMDb_rating %>%
   mutate(IMDb = as.numeric(IMDb))
+
+# write platforms_all_genre_rating to csv
+write.csv(platforms_all_avg_IMDb_rating, 
+          file = 'platforms_all_avg_IMDb_rating.csv')
   
 # Get average Rotten Tomatoes rating for each platform
 platforms_all_avg_Rotten_rating <- platforms_all %>%
@@ -365,6 +372,10 @@ platforms_all_avg_Rotten_rating$RottenTomatoes <-
 platforms_all_avg_Rotten_rating <- platforms_all_avg_Rotten_rating %>%
   mutate(RottenTomatoes = as.numeric(RottenTomatoes))
 
+# write platforms_all_avg_Rotten_rating to csv
+write.csv(platforms_all_avg_Rotten_rating, 
+          file = 'platforms_all_avg_Rotten_rating.csv')
+
 ggplotly(ggplot(data = platforms_all_avg_IMDb_rating, 
                 aes(x = Service, y = IMDb)) +
            geom_bar(stat='identity', fill = "#FF6666") +
@@ -377,5 +388,12 @@ ggplotly(ggplot(data = platforms_all_avg_Rotten_rating,
            geom_bar(stat='identity', fill = "#FF6666") +
            labs(title = "Average Rotten Tomatoes Ratings of Shows By Platform",
                 x = "Platform",
+                y = "Average IMDb Rating (Out of 10)"))
+
+ggplotly(ggplot(data = platforms_all_genre_rating, 
+                aes(x = Genres, y = IMDb, fill = Service)) +
+           geom_bar(stat='identity') +
+           labs(title = "Average IMDb Ratings of Shows By Genre",
+                x = "Genre",
                 y = "Average IMDb Rating (Out of 10)"))
 

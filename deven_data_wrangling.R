@@ -358,5 +358,4 @@ ggplotly(ggplot(data = platforms_all_avg_Rotten_rating,
            labs(title = "Average Rotten Tomatoes Ratings of Shows By Platform",
                 x = "Platform",
                 y = "Average IMDb Rating (Out of 10)"))
-  
 

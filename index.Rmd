@@ -186,7 +186,7 @@ ggplotly(ggplot() +
 
 
 
-```{r figure2 network}
+```{r figure2 network, eval = FALSE}
 # Some preliminary data wrangling that builds off of what has already been done, but formats specific to use for making network
 
 # read in csv files

@@ -323,13 +323,19 @@ platforms_all_genre <- platforms_all %>%
   mutate(Genres = strsplit(as.character(Genres), ",")) %>% 
   unnest(Genres)
 
-write.csv(platforms_all, file = 'shows_by_platform_genre.csv')
-
-# Get average IMDb rating for each platform
+# Get average IMDb rating for each platform by genre
 platforms_all_genre_rating <- platforms_all_genre %>%
   na.omit(platforms_all_genre$IMDb, platforms_all_genre$Genres) %>%
   group_by(Service, Genres) %>%
   summarise_at(vars(IMDb), list(IMDb = mean))
+
+ggplotly(ggplot(data = platforms_all_genre_rating, 
+                aes(x = Genres, y = IMDb, fill = Service)) +
+           geom_bar(stat='identity') +
+           labs(title = "Average IMDb Ratings of Shows By Genre",
+                x = "Genre",
+                y = "Average IMDb Rating (Out of 10)"))
+
 
 # Get average IMDb rating for each platform
 platforms_all_avg_IMDb_rating <- platforms_all %>%

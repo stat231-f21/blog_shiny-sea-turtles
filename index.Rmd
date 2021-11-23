@@ -238,7 +238,7 @@ ggplot(data = people_network, aes(x = x, y = y,
   geom_nodes(aes(size = n, color = role)) +
   geom_nodetext_repel(aes(label = name)) +
   theme_blank() +
-  labs(color = "role", caption = "Actor - Director Relationships")
+  labs(color = "role", caption = "Actor Relationships")
 ```
 
 

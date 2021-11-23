@@ -185,7 +185,7 @@ knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/",
 
 
 
-```{r figure2 data wrangling}
+```{r figure2 data wrangling, eval = FALSE}
 # Some preliminary data wrangling that builds off of what has already been done, but formats specific to use for making network
 
 # read in csv files
@@ -235,6 +235,12 @@ people_network <- ggnetwork(people_igraph)
 
 # write into csv so the entire code doesnt have to be run every time.
 write_csv(people_network, file = 'people_network.csv')
+```
+
+
+```{r figure2 network}
+# Read in network dataset
+people_network <- read_csv(file = 'people_network.csv')
 
 # visualization
 ggplot(data = people_network, aes(x = x, y = y, 

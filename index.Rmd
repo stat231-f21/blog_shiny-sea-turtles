@@ -235,7 +235,7 @@ write_csv(people_network, file = 'people_network.csv')
 ggplot(data = people_network, aes(x = x, y = y, 
                                   xend = xend, yend = yend)) +
   geom_edges(aes(size = weight), color = "lightgrey", curvature = 0.1, ) +
-  geom_nodes(aes(size = n, color = role)) +
+  geom_nodes(aes(size = n), color = "purple") +
   geom_nodetext_repel(aes(label = name)) +
   theme_blank() +
   labs(color = "role", caption = "Actor Relationships")

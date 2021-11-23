@@ -229,15 +229,6 @@ people_igraph <- graph_from_data_frame(d = ed,
 
 ```
 
-
-```{r figure2 network}
-people_network_rough <- ggnetwork(people_igraph)
-
-# write into csv so the entire code doesnt have to be run every time.
-write_csv(people_network_rough, file = 'people_network.csv')
-```
-
-
 ```{r figure2 network}
 # Read in network dataset
 people_network <- read_csv(file = 'people_network.csv')

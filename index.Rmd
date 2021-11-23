@@ -249,7 +249,7 @@ ggplot(data = people_network, aes(x = x, y = y,
   geom_nodes(aes(size = n), color = "purple") +
   geom_nodetext_repel(aes(label = name)) +
   theme_blank() +
-  labs(color = "role", caption = "Actor Relationships")
+  labs(caption = "Actor Relationships")
 ```
 
 

@@ -273,9 +273,14 @@ For typesetting equations appropriately, take a look at the *Symbols in math mod
 
 # Wordcloud of Description
 
+# Wordcloud of Description
+
 ```{r}
 desc_frequencies <- read_csv("data/wordcloud.csv")
+d_words <- read_csv("data/d_words.csv")
+```
 
+```{r}
 # Word cloud will rearrange each time unless seed is set
 set.seed(53)
 
@@ -297,6 +302,20 @@ wordcloud(words = desc_frequencies$word,
           # font family
           family = "sans")
 
+```
+
+```{r top-words-plot, fig.width = 5, fig.height = 3.2}
+d_words %>%
+  count(word, sort = TRUE) %>% 
+  slice(1:10) %>%
+  ggplot(aes(x = reorder(word, n), y = n, 
+             color = word, fill = word)) +
+  geom_col() +
+  coord_flip() +
+  guides(color = "none", fill = "none") +
+  labs(x = NULL,
+       y = "Number of instances",
+       title = "The most common words in Netflix descriptions")
 ```
 
 

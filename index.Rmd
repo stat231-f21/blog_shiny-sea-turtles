@@ -1,11 +1,13 @@
 ---
 title: "Netflix"
 author: "Kauila, Deven, and Mahathi"
-date: "Add a date"
+date: "11/30/2021"
 output:
   rmdformats::readthedown:
     thumbnails: false
     highlight: "kate"
+    self_contained: false
+
 ---
 
 ```{r setup, include = FALSE}
@@ -176,7 +178,7 @@ ggplotly(ggplot() +
 
 ```
 
-```{r}
+```{r, out.extra="data-external=1"}
 knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
                    height = "600px")
 ```

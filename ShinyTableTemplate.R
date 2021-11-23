@@ -104,7 +104,6 @@ server <- function(input, output){
                       mtables$IMDb <= input$imdb[2]) & 
                      (mtables$RottenTomatoes >= input$rottentom[1] & 
                       mtables$RottenTomatoes <= input$rottentom[2]),] 
-
   })
   
   # Visualization 2: Bar Graph
@@ -136,7 +135,3 @@ server <- function(input, output){
 ####################
 
 shinyApp(ui = ui, server = server)
-
-# # embed code into blog
-# knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
-# height = "600px")

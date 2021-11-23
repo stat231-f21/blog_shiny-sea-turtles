@@ -211,10 +211,7 @@ final3 <- final3 %>%
 
 # get rid of duplicate names
 final3 <- final3[-c(15, 17, 30, 35, 40, 42, 44, 48, 78, 89, 94, 99, 109, 119, 141, 153, 157, 160, 168, 173, 178, 209, 210, 214, 217), ]
-```
 
-
-```{r figure2 network}
 # create dataframes for igraph
 ve <- final3
 ed <- df %>%
@@ -230,6 +227,10 @@ people_igraph <- graph_from_data_frame(d = ed,
                                        directed = FALSE) %>%
   simplify()
 
+```
+
+
+```{r figure2 network}
 people_network <- ggnetwork(people_igraph)
 
 # write into csv so the entire code doesnt have to be run every time.

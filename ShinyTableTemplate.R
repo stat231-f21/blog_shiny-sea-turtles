@@ -138,5 +138,5 @@ server <- function(input, output){
 shinyApp(ui = ui, server = server)
 
 # # embed code into blog
-# knitr::include_app("https://your-account.shinyapps.io/your-app/", 
+# knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
 # height = "600px")

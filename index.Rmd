@@ -111,14 +111,6 @@ In a study from the 1920s, fifty cars were used to see how the speed of the car 
 You can also embed plots as normal, for example:
 
 ```{r figure1}
-ggplot(data = cars, aes(x = speed, y = dist)) + 
-  geom_point() + 
-  labs(x = "Speed of car (mph)",
-       y = "Distance taken to stop (ft)",
-       title = "Stopping distance increases with faster speeds",
-       subtitle = "Based on 1920s study") +
-  theme_classic()
-
 # Map of Netflix Shows/Films by Country
 ggplotly(ggplot() +
   geom_sf(data = world_map, fill = "white") +
@@ -184,6 +176,10 @@ ggplotly(ggplot() +
 
 ```
 
+```{r}
+knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
+                   height = "600px")
+```
 
 
 ```{r figure2 network, eval = FALSE}

@@ -129,7 +129,7 @@ ggplotly(ggplot() +
                                     'Locations of Filming for Netflix Content',
                                     '<br>',
                                     '<sup>',
-                                    'From 2013 to 2019',
+                                    'Added From 2014 to 2021',
                                     '</sup>'), 
                       xref = "paper", xanchor = "center"))
 

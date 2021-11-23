@@ -92,20 +92,24 @@ netflix_map <- netflix_shows %>%
   select(show_id, type, title, country) %>%
   # If movies have multiple countries, make a new row for each country
   unnest_tokens(output = country, input = country, token = "regex", 
-                pattern = c(", ")) %>%
+                pattern = c(", ",",")) %>%
   # Drop NAs
   drop_na() %>%
   # Rename country to ID to match world map data
   rename(ID = country)
 
+netflix_map$ID <- str_trim(netflix_map$ID, side = c("left"))
+
 # change country names to match country names in world map data
 netflix_map$ID[netflix_map$ID == "united kingdom"] <- "uk"
+netflix_map$ID[netflix_map$ID == "united kingdom,"] <- "uk"
 netflix_map$ID[netflix_map$ID == "united states"] <- "usa"
 netflix_map$ID[netflix_map$ID == "east germany"] <- "germany"
 netflix_map$ID[netflix_map$ID == "west germany"] <- "germany"
 netflix_map$ID[netflix_map$ID == "soviet union"] <- "russia"
 netflix_map$ID[netflix_map$ID == "hong kong"] <- "china"
 netflix_map$ID[netflix_map$ID == "vatican city"] <- "vatican"
+netflix_map$ID[netflix_map$ID == "cambodia,"] <- "cambodia"
 
 # Get number of shows/movies by country
 netflix_map_by_country <- netflix_map %>%

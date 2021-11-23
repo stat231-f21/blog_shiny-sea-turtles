@@ -99,11 +99,11 @@ server <- function(input, output){
   output$table <- DT::renderDataTable({
 #    addCheckboxButtons <- paste0('<input type="checkbox" name="row', cb_choices, '" Streaming Service="', cb_choices, '">',"")
 #    cbind(Pick=addCheckboxButtons, mtables[, input$streamingservice, drop=FALSE])
-    dt1 <- mtables[(mtables$Year >= input$yr[1] & mtables$Year <= input$yr[2]),] 
-    dt2 <- mtables[(mtables$IMDb >= input$imdb[1] & 
-                     mtables$IMDb <= input$imdb[2]),] 
-    dt3 <- mtables[(mtables$RottenTomatoes >= input$rottentom[1] & 
-                     mtables$RottenTomatoes <= input$rottentom[2]),] 
+    dt1 <- mtables[(mtables$Year >= input$yr[1] & mtables$Year <= input$yr[2]) & 
+                     (mtables$IMDb >= input$imdb[1] & 
+                      mtables$IMDb <= input$imdb[2]) & 
+                     (mtables$RottenTomatoes >= input$rottentom[1] & 
+                      mtables$RottenTomatoes <= input$rottentom[2]),] 
 
   })
   

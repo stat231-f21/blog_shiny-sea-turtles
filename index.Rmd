@@ -278,7 +278,7 @@ wordcloud(words = desc_frequencies$word,
           # plot the words in a random order
           random.order = TRUE,
           # specify the range of the size of the words
-          scale = c(3, 0.5),
+          scale = c(3, 0.3),
           # specify proportion of words with 90 degree rotation
           rot.per = 0.15,
           # colors words from least to most frequent

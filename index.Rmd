@@ -257,33 +257,6 @@ ggplot(data = people_network, aes(x = x, y = y,
   labs(caption = "Actor Relationships")
 ```
 
-
-Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 
-
-## Including links and images/videos
-
-You can include [links](https://www.datadreaming.org/post/r-markdown-theme-gallery/) and there are a few ways to embed  images! Both options for embedding images below can be used interchangeably. They both work for png, pdf, jpg, and even gif formats, and both support filepaths that are either URLs (for videos, you can include links to any valid YouTube or Vimeo URLs; see [here](https://bookdown.org/yihui/rmarkdown/learnr-videos.html) for more details) or point to a location within your project directory. 
-
-### Option 1: Markdown approach
-
-![This is a figure caption. The artwork is called Safe Space by  [Kenesha Sneed](https://www.keneshasneed.com/#/safespace/)](img/Kenesha-Sneed_safe-space.jpeg)
-
-
-### Option 2: Code chunk approach
-
-```{r, fig.cap = "This is also figure caption"}
-knitr::include_graphics("https://media.giphy.com/media/H7ZrrA9V2pd3Tehdds/giphy.gif")
-```
-
-## Including equations
-
-Equations may be needed if you are explaining a new technique or perhaps providing some other relevant formulas in your exposition. There are two ways to include equations:
-
-* Inline: $b \sim N(0, \sigma^2_b)$
-* Display-style (displayed on its own line): $$\frac{\sigma^2_b}{\sigma^2_b + \sigma^2_e}$$
-
-For typesetting equations appropriately, take a look at the *Symbols in math mode* section of this  [cheat sheet](https://users.dickinson.edu/~richesod/latex/latexcheatsheet.pdf)  (or do some extra Googling---there are *many* resources).
-
 # Wordcloud of Description
 
 ```{r}
@@ -328,6 +301,33 @@ d_words %>%
        y = "Number of instances",
        title = "The most common words in Netflix descriptions")
 ```
+
+
+Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 
+
+## Including links and images/videos
+
+You can include [links](https://www.datadreaming.org/post/r-markdown-theme-gallery/) and there are a few ways to embed  images! Both options for embedding images below can be used interchangeably. They both work for png, pdf, jpg, and even gif formats, and both support filepaths that are either URLs (for videos, you can include links to any valid YouTube or Vimeo URLs; see [here](https://bookdown.org/yihui/rmarkdown/learnr-videos.html) for more details) or point to a location within your project directory. 
+
+### Option 1: Markdown approach
+
+![This is a figure caption. The artwork is called Safe Space by  [Kenesha Sneed](https://www.keneshasneed.com/#/safespace/)](img/Kenesha-Sneed_safe-space.jpeg)
+
+
+### Option 2: Code chunk approach
+
+```{r, fig.cap = "This is also figure caption"}
+knitr::include_graphics("https://media.giphy.com/media/H7ZrrA9V2pd3Tehdds/giphy.gif")
+```
+
+## Including equations
+
+Equations may be needed if you are explaining a new technique or perhaps providing some other relevant formulas in your exposition. There are two ways to include equations:
+
+* Inline: $b \sim N(0, \sigma^2_b)$
+* Display-style (displayed on its own line): $$\frac{\sigma^2_b}{\sigma^2_b + \sigma^2_e}$$
+
+For typesetting equations appropriately, take a look at the *Symbols in math mode* section of this  [cheat sheet](https://users.dickinson.edu/~richesod/latex/latexcheatsheet.pdf)  (or do some extra Googling---there are *many* resources).
 
 
 # You can even create tabs within your webpage if you want! {.tabset .tabset-fade .tabset-pills}

@@ -13,64 +13,6 @@ library(kableExtra)
 library(viridis)
 library(plotly)
 
-# scraping
-
-url <- "https://www.whats-on-netflix.com/news/every-viewing-statistic-netflix-has-released-so-far-october-2021/"
-
-paths_allowed(url)
-
-url_html <- read_html(url)
-
-shows <- url_html %>%
-  html_elements("h4 em") %>%
-  html_text()
-
-shows_info <- url_html %>%
-  html_elements("div p ") %>%
-  html_text() %>%
-  tolower()
-
-shows_data <- tibble(show = shows)
-
-# Missing some show names
-
-shows_info_data <- tibble(show_info = shows_info)
-
-shows_info_data1 <- data.frame(show_info = unlist(strsplit(as.character(shows_info_data$show_info), "number of viewers: ")))
-shows_info_data1 <- data.frame(show_info = unlist(strsplit(as.character(shows_info_data1$show_info), "number of viewers:")))
-
-shows_info_data1$show_info <- gsub("~", "", as.character(shows_info_data1$show_info))
-shows_info_data1$show_info <- gsub(" million", ",000,000", as.character(shows_info_data1$show_info))
-shows_info_data1$show_info <- gsub("\\,000,00\\b", ",000,000", as.character(shows_info_data1$show_info))
-shows_info_data1 <- shows_info_data1[!grepl("type", shows_info_data1$show_info),]
-
-shows_info_data1 <- tibble(show_info = shows_info_data1)
-
-## get weird numbers too
-
-shows_info_data1 <- gsub("(600,000).*","\\1",shows_info_data1$show_info)
-
-shows_info_data1 <- tibble(show_info = shows_info_data1)
-shows_info_data1 <- gsub("(000,000).*","\\1",shows_info_data1$show_info)
-
-shows_info_data1 <- tibble(show_info = shows_info_data1)
-
-shows_info_data_new <- str_extract(shows_info_data1$show_info, 
-                                   ".*[:digit:]$")
-
-shows_info_data_final <- tibble(shows_info_data_new = shows_info_data_new)
-
-shows_info_data_final <- shows_info_data_final%>%
-  drop_na()
-
-shows_info_data_final  <- shows_info_data_final [-c(151:161, 37, 39, 43, 46, 51, 
-                                                    53, 55, 57, 59, 61, 63, 64, 
-                                                    66, 68, 70, 75, 77, 82, 84, 
-                                                    85, 98, 99, 100, 102, 103, 
-                                                    105, 107, 113, 115, 117, 
-                                                    118, 122, 124, 126, 128, 
-                                                    130, 136, 142), ]
-
 # reading in csv
 
 netflix_shows <- read_csv("data/netflix_titles.csv")
@@ -262,6 +204,10 @@ netflix_popular_show_map <- netflix_popular_show_map %>%
 # write most_popular_show to csv (cant write geom to csv?)
 write.csv(shows_popularity_full, file = 'most_popular_show_map.csv')
 
+#############
+# Bar Chart #
+#############
+
 ## Shows/Films on all streaming platforms dataset ##
 
 all_stream_shows <- all_stream_shows %>%
@@ -344,53 +290,20 @@ platforms_all_genre_rating <- platforms_all_genre_rating %>%
 # write platforms_all_genre_rating to csv
 write.csv(platforms_all_genre_rating, file = 'platforms_all_genre_rating.csv')
 
-# Get average IMDb rating for each platform
-platforms_all_avg_IMDb_rating <- platforms_all %>%
-  na.omit(platforms_all$IMDb) %>%
-  group_by(Service) %>%
-  summarise_at(vars(IMDb), list(IMDb = mean))
-
-# Make each average rating have only two decimal points
-platforms_all_avg_IMDb_rating$IMDb <- 
-  format(round(platforms_all_avg_IMDb_rating$IMDb, 2), nsmall = 2)
-
-# Make IMDb a numeric variable
-platforms_all_avg_IMDb_rating <- platforms_all_avg_IMDb_rating %>%
-  mutate(IMDb = as.numeric(IMDb))
-
-# write platforms_all_genre_rating to csv
-write.csv(platforms_all_avg_IMDb_rating, 
-          file = 'platforms_all_avg_IMDb_rating.csv')
-  
-# Get average Rotten Tomatoes rating for each platform
-platforms_all_avg_Rotten_rating <- platforms_all %>%
-  na.omit(platforms_all$RottenTomatoes) %>%
-  group_by(Service) %>%
+# Get average Rotten Tomatoes rating for each platform by genre
+platforms_all_genre_Rotten <- platforms_all_genre %>%
+  na.omit(platforms_all_genre$RottenTomatoes, platforms_all_genre$Genres) %>%
+  group_by(Service, Genres) %>%
   summarise_at(vars(RottenTomatoes), list(RottenTomatoes = mean))
 
 # Make each average rating have only two decimal points
-platforms_all_avg_Rotten_rating$RottenTomatoes <- 
-  format(round(platforms_all_avg_Rotten_rating$RottenTomatoes, 2), nsmall = 2)
+platforms_all_genre_Rotten$RottenTomatoes <- 
+  format(round(platforms_all_genre_Rotten$RottenTomatoes, 2), nsmall = 2)
 
 # Make RottenTomatoes a numeric variable
-platforms_all_avg_Rotten_rating <- platforms_all_avg_Rotten_rating %>%
+platforms_all_genre_Rotten <- platforms_all_genre_Rotten %>%
   mutate(RottenTomatoes = as.numeric(RottenTomatoes))
 
-# write platforms_all_avg_Rotten_rating to csv
-write.csv(platforms_all_avg_Rotten_rating, 
-          file = 'platforms_all_avg_Rotten_rating.csv')
-
-ggplotly(ggplot(data = platforms_all_avg_IMDb_rating, 
-                aes(x = Service, y = IMDb)) +
-           geom_bar(stat='identity', fill = "#FF6666") +
-           labs(title = "Average IMDb Ratings of Shows By Platform",
-                x = "Platform",
-                y = "Average IMDb Rating (Out of 10)"))
-
-ggplotly(ggplot(data = platforms_all_avg_Rotten_rating, 
-                aes(x = Service, y = RottenTomatoes)) +
-           geom_bar(stat='identity', fill = "#FF6666") +
-           labs(title = "Average Rotten Tomatoes Ratings of Shows By Platform",
-                x = "Platform",
-                y = "Average IMDb Rating (Out of 10)"))
+# write platforms_all_genre_Rotten to csv
+write.csv(platforms_all_genre_Rotten, file = 'platforms_all_genre_Rotten.csv')
 

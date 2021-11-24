@@ -289,7 +289,7 @@ wordcloud(words = desc_frequencies$word,
 ```
 
 ```{r top-words-plot, fig.width = 5, fig.height = 3.2}
-d_words %>%
+d <- d_words %>%
   count(word, sort = TRUE) %>% 
   slice(1:10) %>%
   ggplot(aes(x = reorder(word, n), y = n, 
@@ -302,6 +302,9 @@ d_words %>%
        title = "The most common words in Netflix descriptions")
 ```
 
+```{r}
+ggplotly(d)
+```
 
 Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 
 

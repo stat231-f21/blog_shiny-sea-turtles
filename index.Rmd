@@ -44,9 +44,9 @@ options(knitr.kable.NA = '')
 knitr::include_graphics("https://media.giphy.com/media/vYHSRSor0Kaje/giphy.gif")
 ```
 
-## Motivation
+## Motivation: What is Intriguing about Netflix?
 
-## Background
+## Background: What is Netflix?
 
 ## Data Description
 
@@ -406,6 +406,7 @@ d <- d_words %>%
 ggplotly(d, tooltip = "n")
 ```
 
+# Conclusion
 
 Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 
 

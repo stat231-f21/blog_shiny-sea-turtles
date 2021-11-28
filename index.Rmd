@@ -380,11 +380,11 @@ mypal <- brewer.pal(10, "Paired")
 wordcloud(words = desc_frequencies$word, 
           freq = desc_frequencies$n,
           min.freq = 20,
-          max.words = 75,
+          max.words = 100,
           # plot the words in a random order
-          random.order = TRUE,
+          random.order = FALSE,
           # specify the range of the size of the words
-          scale = c(3, 0.3),
+          scale = c(4, 0.25),
           # specify proportion of words with 90 degree rotation
           rot.per = 0.15,
           # colors words from least to most frequent
@@ -414,13 +414,15 @@ d <- d_words %>%
 ggplotly(d, tooltip = "n")
 ```
 
+# {-}
+
 *Findings:*
 
-Our word cloud was created from a desire to explore the most prevalent keywords across all Netflix descriptions. As for the code, the word cloud was incredibly simple. The data wrangling merely consisted of isolating each word of the description and removing all stop words. The size and color of the words are proportional to their frequency. Accompanying the wordcloud is a ggplotly table with the top 10 most common words in all Netflix descriptions, ordered by the number of instances, n. I find it interesting just how much of an outlier the most frequent word, "life," is when compared to the other nine. The word “life” appeared 833 times, while the other nine most common words occurred between 300 and 500 times. The top six words seem to have very positive, humanitarian connotations: life, family, world, love, woman, and friends. Based on the frequency plot, it appears that Netflix series were slightly more abundant than Netflix documentaries. However, the major limitation to this word cloud is the lack of context.
+Our word cloud was created from a desire to explore the most prevalent keywords across all Netflix descriptions. As for the code, the word cloud was incredibly simple. Using the Kaggle data table, the wrangling merely consisted of isolating each word of the description and removing all stop words. This word cloud consists of the top 100 most frequent words, with the condition that the word must occur at least 20 times. The words are also ordered with most frequent in the middle and least frequent on the outside. The size and color of the words are proportional to their frequency. The color of the words are associated with their abundance, going from cool to warm colors. Cool colors such as light blues and greens are also the smallest on the outskirts of the circle, meaning they occur lest frequently than the words in warmer colors such as dark green, red, yellow, orange, and finally, purple. Accompanying the `wordcloud` is a `ggplotly` table with the top 10 most common words in all Netflix descriptions, ordered by the number of instances, n. I find it interesting how much of an outlier the most frequent word, "life," is when compared to the other nine. The word “life” appeared 833 times, while the other nine most common words occurred between 300 and 500 times. The top six words seem to have very lighthearted, positive connotations: life, family, world, love, woman, and friends. Based on the frequency plot, it appears that Netflix series were slightly more abundant than Netflix documentaries. However, the major limitation to this word cloud is the lack of context.
 
 *Limitations:*
 
-The main limit to this word cloud is the lack of context. It is impossible to decipher exactly why these words are the most frequent. For example, while “life” occurs over 830 times, I am unsure what it refers to. Additionally, some of these words may appear many times in one description, or these keywords may be very abundant in specific genres. It may not be an accurate representation of what most of the movies are about, but instead, a representation of a few, concentrated descriptions that repeat these words many times. 
+The main limit to this word cloud is the lack of context. It is impossible to decipher exactly why these words are the most frequent. For example, while “life” is written over 830 times, I am unsure what it refers to. Does it refer to life, meaning lively and energetic, or does it refer to the state of being, such as the life of the protagonist? I am hesitant to make strong conclusions or inferences about the content on Netflix. At first glance, the most frequent words "love," "life," "friends," and "family" appear to have optimistic, feel-good undertones when compared to words like "murder," "death," and "crime" that rank 25, 26, and 31, respectively. But again, the context is lacking unless I decide sift through every 8,807 descriptions in the database, a task far too tedious. Additionally, some of these words may appear many times in one description, or these keywords may be very abundant in specific genres. These words may not be an accurate representation of what most of the movies are about, but instead, a representation of a few, concentrated descriptions that repeat these words many times. 
 
 # Conclusion
 

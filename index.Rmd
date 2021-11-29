@@ -46,6 +46,8 @@ knitr::include_graphics("https://media.giphy.com/media/vYHSRSor0Kaje/giphy.gif")
 
 ## Motivation: What is Intriguing about Netflix?
 
+Entertainment plays an important role in every human society, across time periods and across geographical locations. From the micro to the macro level, each individual is trying to find a new and better way to keep themselves engaged. One of the most prominent forms of entertainment in our recent history is cinema, a multifaceted tool for both those seeking intellectual stimulation and a way to unwind and power down. In the past few decades, we have observed a gradual transition from going to the theaters and home video to on-demand through streaming platforms. The rise of such platforms, namely Netflix, may be attributed to tangibles such as consumer preferences, ease of access, and an enormous increase in selection. A consequence of this occurrence, however, is a rise in global connections through entertainment. Viewers now have access to a plethora of titles in various languages right at their fingertips, and the travelling of ideas across cultures, languages, and thought processes has never been easier. We aim to explore just how widespread a reach Netflix has by looking at its global distribution, emotional nuances depicted in films, and connections between artists that have worked in Netflix films. This exciting period in human history suggests promising growth and new understanding; however, it carries with it the possibility of broadcasting charged information or narratives. It is therefore our responsibility to study this tool and all its abilities in order to promote positive development. 
+
 ## Background: What is Netflix?
 
 This project is about different aspects of big streaming services; the main focus is on Netflix, but we also compare movie ratings between Netflix, Disney+, Hulu, and Amazon Prime Video. For those unfamiliar with the platform, Netflix is a subscription-based streaming service (https://help.netflix.com/en/node/412). Users, choosing from a range of subscriptions options (basic, standard, or premium), pay a fee ($8.99, $13.99, or $17.99) once a month and are able to watch a wide range of award-winning movies, anime, documentaries, and TV shows. The content is streamed in more than 30 languages in about 190 countries (​​https://about.netflix.com/en). A major benefit to Netflix is that all of the content is advertisement-free. Netflix is the largest streaming platform to date with over 210 million subscribers. Hulu, Disney+, and Prime Video are very similar to Netflix; the only difference is the content. Streaming services these past few years, with theaters closed and families staying home, experienced a massive influx of users during the pandemic. Commercial films that were to be released in theaters were instead released on these various streaming platforms where families could watch new releases in the comfort and safety of their homes. 
@@ -362,6 +364,23 @@ ggplot(data = people_network, aes(x = x, y = y,
   labs(caption = "Actor Relationships")
 ```
 
+## Procedure
+
+The purpose of the network visualization was to exhibit the connections between individuals who had worked on a variety of Netflix titles together; it provides information on the magnitude of common projects, and from the network we can extrapolate whether there are any high profile collaborations amongst artists across countries. 
+
+To create the visualization, a bit of data wrangling was performed on the original dataset from Kaggle that included thousands of Netflix titles. From this original dataset, two dataframes were created: one that included the names and roles of the 20 actors that worked on the greatest number of projects which served as the vertices dataframe, and a cross-product matrix was created to form the basis of the edges dataframe. In the final visualization, dots are labeled with the name of the individual, and the thickness of the edge between any two nodes represents the number of projects that the two individuals have worked on together. 
+
+## Findings
+
+From the visualization, we see that actors like Boman Irani and Kareena Kapoor have worked with a large variety of actors across their projects (as there are a good number of edges that extend from these nodes), while other actors like Jigna Bhardwaj and Julie Tejwani that have not worked with as high a variety of other actors but have worked on a great number of projects with a small group. Three nodes does not have any edges; John Cleese, Samuel L. Jackson and Fred Tatasciore, who have both worked on a very high number of Netflix films but none in common with the other popular Netflix actors. This may be explained by the fact that except for John Cleese, Andrea Libman, Vincent Tong, Fred Tatasciore, Samuel L. Jackson, Yuki Kaji, and Takahiro Sakurai, all other actors in the diagram are Indian. Not only do Indian actors act in a large number of Netflix films - or, not only do Indian films comprise a large amount of Netflix films - the same Indian actors seem to have worked together on many films. There is also little cross connection between actors working in different countries - while such cross connection may exist, the network shows that it is not as common an occurrence amongst the most sought-after actors on Netflix. 
+
+## Limitations
+
+Though the network is a very useful visualization and offers a variety of information, it still has its limitations. One such limitation is in its display of color. The original idea of the network was to color nodes based on whether the individual in question was an actor or director. However, since the individuals that worked on the greatest number of films were all actors, this distinction was unable to be brought forth. A more useful method to color the nodes would have been by country; this would have required a complete reconstruction of the data wrangling process and it was ultimately decided that this information would be redundant as a geographical visualization would also be displayed separately. It is ultimately still a drawback of the network (as the network does not display information to its potential), but it is something to keep in mind for a future visualization of this data. 
+
+Additionally, a network becomes difficult to read if too many observations are included (which is why only the actors working in the highest number of films are included). This is especially limiting in this situation as the dataset included a high volume of observations, most of which could not be included in order to keep the visualization concise and decipherable. There is a lot more to be offered by the dataset and in theory could be presented through the network, but would ultimately take away from the purpose of the visualization itself. 
+
+
 # Wordcloud of Movie/Show Descriptions {.tabset .tabset-fade .tabset-pills}
 
 ```{r Load Data Wordcloud, include = FALSE}
@@ -370,6 +389,7 @@ d_words <- read_csv("data/d_words.csv")
 ```
 
 ## Wordcloud 
+
 ```{r Wordcloud Output, echo = FALSE}
 # Word cloud will rearrange each time unless seed is set
 set.seed(53)

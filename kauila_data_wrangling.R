@@ -14,9 +14,9 @@ shows <- read_csv("data/netflix_titles.csv") %>%
 description_all <- shows %>%
   unnest_tokens(output = word, input = description)
 
-# d_ngrams <- description %>%
-#   unnest_tokens(output = bigram, input = word,
-#                 token = "ngrams", n = 2)
+d_ngrams <- description_all %>%
+  unnest_tokens(output = bigram, input = word,
+                token = "ngrams", n = 2)
 
 data(stop_words)
 
@@ -28,8 +28,10 @@ stop_words %>%
   count(lexicon)
 
 # Create new dataset since we are removing words
-d_words <- description %>%
+d_words <- description_all %>%
   anti_join(stop_words, by = "word")
+
+write_csv(d_words, "data/d_words.csv")
 
 # Explore which stop words were removed
 ## If you don't want all these words removed, you can modify 

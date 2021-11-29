@@ -3,7 +3,7 @@ title: "Netflix"
 author: "Kauila, Deven, and Mahathi"
 date: "11/30/2021"
 output:
-  rmdformats::readthedown:
+  rmdformats::robobook:
     thumbnails: false
     highlight: "kate"
     self_contained: false
@@ -38,11 +38,32 @@ knitr::opts_chunk$set(echo = FALSE,
 options(knitr.kable.NA = '')
 ```
 
-# Header 1 (Section heading)
+# Introduction
 
-## Header 2 (Subsection heading)
+```{r, fig.cap = "The Rise of Netflix's Stock Price"}
+knitr::include_graphics("https://media.giphy.com/media/vYHSRSor0Kaje/giphy.gif")
+```
 
-### Header 3 (Subsubsection heading)
+## Motivation: What is Intriguing about Netflix?
+
+## Background: What is Netflix?
+
+This project is about different aspects of big streaming services; the main focus is on Netflix, but we also compare movie ratings between Netflix, Disney+, Hulu, and Amazon Prime Video. For those unfamiliar with the platform, Netflix is a subscription-based streaming service (https://help.netflix.com/en/node/412). Users, choosing from a range of subscriptions options (basic, standard, or premium), pay a fee ($8.99, $13.99, or $17.99) once a month and are able to watch a wide range of award-winning movies, anime, documentaries, and TV shows. The content is streamed in more than 30 languages in about 190 countries (​​https://about.netflix.com/en). A major benefit to Netflix is that all of the content is advertisement-free. Netflix is the largest streaming platform to date with over 210 million subscribers. Hulu, Disney+, and Prime Video are very similar to Netflix; the only difference is the content. Streaming services these past few years, with theaters closed and families staying home, experienced a massive influx of users during the pandemic. Commercial films that were to be released in theaters were instead released on these various streaming platforms where families could watch new releases in the comfort and safety of their homes. 
+
+Our group wanted each visualization to tell a different story. Our geographical representation displayed Netflix subscriber statistics per country as well as how many films were made in each country. Our network connected both actors with other actors, and actors with directors. We can clearly see the top actors and the top interactions based on the weight of the nodes and the thickness of the edges. Next, looking at which keywords were the most apparent in Netflix descriptions, our word cloud, where the size of the words are correlated with the number of times they appear in all descriptions, accompanied by a simple graph of the top 10 words provides a riveting insight into the types of shows people are most passionate about. Finally, our shiny app compares and contrasts information across popular streaming platforms. Our table allows for easily customized searches by ranges of release years and movie ratings, while our bar chart compares average ratings, across platforms, for each genre. 
+
+
+## Data Description
+
+In order to answer our questions of interest, our data has detailed statistics and information relating to video streaming platforms, primarily Netflix, and shows/movies on these platforms. The data was collected from multiple sources, including two datasets from Kaggle, a table from Comparitech, and multiple datasets from Google Trends. 
+ 
+Kaggle is an online data science community that has open datasets for public use. The first [Kaggle dataset](https://www.kaggle.com/shivamb/netflix-shows) is in a fairly clean `.csv` file compiled by Shivam Bansal, a data science professional, displaying details about nearly 9,000 shows/movies added to Netflix from 2014 to 2021. Some of the information included are the show/movie’s location of filming, actors, directors, date added to Netflix, and description. 
+ 
+The second [Kaggle dataset](https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney) used is a `.csv` file compiled by Ruchi Bhatia, a data scientist, display information about the Rotten Tomatoes and IMDb Ratings of just over 9,500 shows/movies on Netflix, Disney+, Amazon Prime Video, and Hulu released from 1914 to 2021. The Rotten Tomatoes score is determined by film critics while anyone can submit an IMDb Rating, so it is largely determined by fans and/or anti-fans of shows/movies. 
+ 
+Comparitech is site dedicated to technology research, and one of its [articles](https://www.comparitech.com/tv-streaming/netflix-subscribers/) has a table of Netflix revenue and subscribers by country for 2021. We copied this table into Microsoft Excel and converted it to a `.csv` file in order to use it for our visualizations. 
+
+[Google trends](https://trends.google.com/trends/?geo=US) collects data on the popularity of search queries on Google by location in a given time period. We used Google trends to get multiple datasets on popularity scores for the most popular Netflix Original shows (Money Heist, Stranger Things, Bridgerton, 13 Reasons Why, and Squid Game) by country since their debut. Google calculates a search query’s popularity score by country “on a scale from 0 to 100, where 100 is the location with the most popularity as a fraction of total searches in that location.” 
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For example, you can include **Bold** and _Italic_ and `Code` text.  For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
@@ -112,7 +133,19 @@ In a study from the 1920s, fifty cars were used to see how the speed of the car 
 
 You can also embed plots as normal, for example:
 
-```{r figure1}
+# Maps {.tabset .tabset-fade .tabset-pills}
+
+*Procedure:*
+
+The purposes of the map visualizations were to showcase the countries where Netflix has the most subscribers, the countries where the most Netflix content has been filmed, and the most popular shows in different countries. Viewers can compare the maps of Netflix subscribers and locations of filming for Netflix content as well to determine if there is some correlation between where Netflix shows/movies are filmed and its subscriber base. 
+
+To create the maps, we performed data wrangling on the Kaggle dataset of Netflix only titles, the Comparitech table, and the Google Trends datasets.
+
+## Content Filming Locations
+
+We used the Kaggle dataset to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that dataset to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no content). 
+
+```{r map1}
 # Map of Netflix Shows/Films by Country
 ggplotly(ggplot() +
   geom_sf(data = world_map, fill = "white") +
@@ -132,7 +165,17 @@ ggplotly(ggplot() +
                                     'Added From 2014 to 2021',
                                     '</sup>'), 
                       xref = "paper", xanchor = "center"))
+```
 
+*Findings:*
+
+From this map, it is evident that a significant amount of the content on Netflix is filmed in the United States, which is where Netflix’s headquarters is located; specifically, nearly 3,700 shows and movies were filmed in the U.S. However, Netflix does appear to have a lot of content filmed in locations across the World, in six of the seven continents, as it expands its international presence. For example, 1,046 shows/movies were filmed in India, 806 in the United Kingdom, 160 in Australia, 117 in Egypt, and 97 in Brazil. Netflix’s pursuit of global domination in the streaming battles should lead to it acquiring even more films/movies produced abroad in the future. 
+
+## Subscribers
+
+We used the Comparitech table, converted to a `.csv` dataset, to create the map of number of Netflix subscribers in each country by joining it to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how many Netflix subscribers they have. The map is also color coded with a gradient based on how many subscribers a country has compared to other countries (countries with a white fill had no subscriber numbers reported).
+
+```{r map2}
 # Map of Netflix Subscribers by Country
 ggplotly(ggplot() +
   geom_sf(data = world_map, fill = "white") + 
@@ -152,7 +195,21 @@ ggplotly(ggplot() +
                                     'As of Q2 2021; In Thousands of People',
                                     '</sup>'), 
                       xref = "paper", xanchor = "center"))
+```
 
+*Findings:*
+
+From this map, we see that the United States has the most Netflix subscribers with more than 67 million subscribers as of Q2 2021. This makes sense given that the majority of Netflix’s content is produced in the United States as seen in the previous map. Similar to the locations of content map, Netflix has tens of millions of subscribers across the globe, in six of the seven continents. For example, Netflix has ~18 million subscribers in Brazil, ~13 million in the United Kingdom, ~6.5 million in Australia, ~5 million in India, and ~350 thousand in South Africa. It seems that there is some correlation between Netflix subscribers and countries where content was produced; many countries are colored similarly in both maps. This makes sense given that people would want to watch content that is filmed where they live and might have their language. Interestingly, Brazil has a massive number of Netflix subscribers despite a lack of content produced there. In addition, China is white in the Netflix subscribers map even though a decent amount of content is produced there because Netflix has decided not to invest in promoting its platform there due to strong competition. Africa is also largely white because it is still developing, and many of its nations likely do not have enough subscribers for Netflix to report them. Overall, Netflix has clearly been successful in expanding its international subscriber base, and as it produces more content abroad, more people should subscribe.
+
+*Limitations:*
+
+For the Netflix subscribers map, there are only around 50 countries represented. However, Netflix is available for streaming in over 190 countries, so there are clearly more subscriber numbers out there for the other 140 countries that could be added to the map. Whether that data is publicly available somewhere is unlikely, but, without that data, the map is incomplete and does not represent all of Netflix’s subscribers. It would also be interesting to see the growth of Netflix subscribers over time in different countries to see where Netflix is expanding the most; this data could likely be scraped from different sources and reports, but it would be an intensive process. 
+
+## Show Popularity
+
+We used the Google Trends datasets for some of Netflix’s most popular shows to create the map of most popular Netflix shows in each country by joining them into one dataset, which we then joined to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map, the most popular Netflix show in each country, and the popularity scores for all of the specified shows in each country. The map is also color coded based on which show is most popular in each country (countries with a white fill had data on popularity for any of the shows).
+
+```{r map3}
 # Map of Netflix Show Popularity by Country
 ggplotly(ggplot() +
   geom_sf(data = world_map, fill = "white") + 
@@ -175,15 +232,77 @@ ggplotly(ggplot() +
                   '<sup>',
                   'Since the Debut of Each Show; Score from Google Trends',
                   '</sup>'), xref = "paper", xanchor = "center"))
-
 ```
+
+*Findings:*
+
+From this map, we see that no one show appears to dominate. In the Americas, Stranger Things, which is set in a suburban town in the United States, appears to be the most popular show. Similarly, in Europe, Stranger Things appears to be the most popular show, but Thirteen Reasons Why is also quite popular. In Africa, Money Heist is the most popular show. In Asia, Squid Game, which is set in South Korea, is the most popular show. In Australia, Thirteen Reasons Why is the most popular show; this makes sense given that the main actress in the first season is Australian. The popularity of different Netflix shows across the World demonstrates Netflix’s staying power, as it has content for many diverse peoples and cultures. 
+
+*Limitations:*
+
+For this map, the popularity scores are based solely on people searching Stranger Things or Money Heist precisely as of now. We would need to have broader and more inclusive search terms in order to get a true sense of their popularity in a given country. For example, Spaniards are likely searching La Casa de Papel, which is Money Heist in Spanish, so lumping Money Heist and La Casa de Papel would give a more accurate representation of Money Heist’s popularity in Spain. This example is likely applicable for shows in many different countries. This would involve a significant amount of data analysis and strong knowledge of using Google Trends, but the findings would be incredibly interesting. The number of viewers for each Netflix show by country would be a better measure of popularity, but this data does not appear to be publicly available data.
+
+# Shiny App
+
+*Procedure:*
+
+The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the Kaggle dataset containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
 
 ```{r, out.extra="data-external=1"}
 knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
                    height = "600px")
 ```
 
+*Findings:*
 
+From the bar chart, it appears that Disney+ is the best streaming platform for shows/movies in most genres. Hulu, Netflix, and Prime Video have the highest average IMDb ratings in only 7 of the genres. This makes sense given that Disney+ has a very selective catalog of shows/movies that have only been produced by Disney and are generally very high quality; the other platforms have content from many different sources, and that content is likely more variable in terms of quality. In addition, Disney has very loyal fans, so they probably write many IMDb reviews, boosting up the ratings of its content. For most of the genres, the differences between IMDb ratings are quite small between the platforms, so it is worth looking at multiple if you are not a Disney fan or have already seen most of the Disney movies. 
+
+**The best platform to use for different genres (based on average IMDb rating):**
+
+**Disney+:**
+
+* Action
+* Adventure
+* Animation
+* Biography
+* Comedy
+* Drama
+* Family
+* Fantasy
+* Game-Show
+* History
+* Horror
+* Musical
+* Mystery
+* News
+* Reality-TV
+* Romance
+* Sci-Fi
+* Short
+* Talk-Show
+* Thriller
+
+**Hulu:**
+
+* Crime
+* Sport
+* Western
+
+**Netflix:**
+
+* Music
+* War
+
+**Prime Video:**
+
+* Documentary
+* Film-Noir
+
+*Limitations:*
+
+This bar chart should be quite useful for people who enjoy a specific genre of movie/show and are deciding between which streaming platform to buy or browse, but there are some important things to note. The data used for the bar chart does not include all movies/shows on each streaming platform, so the IMDb scores may not be fully accurate, and, since the differences in scores are quite small between the platforms, the addition of all movies/shows on each platform may change the main results. Also, the bar chart doesn’t include other streaming platforms like Apple TV+ or HBO, and it doesn’t account for the fact that Netflix’s library may be much larger than Disney’s, which may influence someone’s decision making. It should be noted as well that the streaming platforms update their content libraries frequently, which would affect these average IMDb ratings. 
+
+# Network of Actors
 
 ```{r figure2 data wrangling, eval = FALSE}
 # Some preliminary data wrangling that builds off of what has already been done, but formats specific to use for making network
@@ -229,15 +348,6 @@ people_igraph <- graph_from_data_frame(d = ed,
 
 ```
 
-
-```{r figure2 network}
-people_network_rough <- ggnetwork(people_igraph)
-
-# write into csv so the entire code doesnt have to be run every time.
-write_csv(people_network_rough, file = 'people_network.csv')
-```
-
-
 ```{r figure2 network}
 # Read in network dataset
 people_network <- read_csv(file = 'people_network.csv')
@@ -252,9 +362,71 @@ ggplot(data = people_network, aes(x = x, y = y,
   labs(caption = "Actor Relationships")
 ```
 
+# Wordcloud of Movie/Show Descriptions {.tabset .tabset-fade .tabset-pills}
+
+```{r Load Data Wordcloud, include = FALSE}
+desc_frequencies <- read_csv("data/wordcloud.csv")
+d_words <- read_csv("data/d_words.csv")
+```
+
+## Wordcloud 
+```{r Wordcloud Output, echo = FALSE}
+# Word cloud will rearrange each time unless seed is set
+set.seed(53)
+
+# choose color palette from color brewer
+mypal <- brewer.pal(10, "Paired")
+
+wordcloud(words = desc_frequencies$word, 
+          freq = desc_frequencies$n,
+          min.freq = 20,
+          max.words = 100,
+          # plot the words in a random order
+          random.order = FALSE,
+          # specify the range of the size of the words
+          scale = c(4, 0.25),
+          # specify proportion of words with 90 degree rotation
+          rot.per = 0.15,
+          # colors words from least to most frequent
+          colors = mypal,
+          # font family
+          family = "sans")
+
+```
+
+```{r top-words-plot, fig.width = 5, fig.height = 3.2, include = FALSE}
+d <- d_words %>%
+  count(word, sort = TRUE) %>% 
+  slice(1:10) %>%
+  ggplot(aes(x = reorder(word, n), y = n, 
+             color = word, fill = word)) +
+  geom_col() +
+  coord_flip() +
+  guides(color = "none", fill = "none") +
+  labs(x = NULL,
+       y = "Number of instances",
+       title = "The most common words in Netflix descriptions")
+```
+
+## Top 10 Words 
+
+```{r Plot Output, echo = FALSE}
+ggplotly(d, tooltip = "n")
+```
+
+# {-}
+
+*Findings:*
+
+Our word cloud was created from a desire to explore the most prevalent keywords across all Netflix descriptions. As for the code, the word cloud was incredibly simple. Using the Kaggle data table, the wrangling merely consisted of isolating each word of the description and removing all stop words. This word cloud consists of the top 100 most frequent words, with the condition that the word must occur at least 20 times. The words are also ordered with most frequent in the middle and least frequent on the outside. The size and color of the words are proportional to their frequency. The color of the words are associated with their abundance, going from cool to warm colors. Cool colors such as light blues and greens are also the smallest on the outskirts of the circle, meaning they occur lest frequently than the words in warmer colors such as dark green, red, yellow, orange, and finally, purple. Accompanying the `wordcloud` is a `ggplotly` table with the top 10 most common words in all Netflix descriptions, ordered by the number of instances, n. I find it interesting how much of an outlier the most frequent word, "life," is when compared to the other nine. The word “life” appeared 833 times, while the other nine most common words occurred between 300 and 500 times. The top six words seem to have very lighthearted, positive connotations: life, family, world, love, woman, and friends. Based on the frequency plot, it appears that Netflix series were slightly more abundant than Netflix documentaries. However, the major limitation to this word cloud is the lack of context.
+
+*Limitations:*
+
+The main limit to this word cloud is the lack of context. It is impossible to decipher exactly why these words are the most frequent. For example, while “life” is written over 830 times, I am unsure what it refers to. Does it refer to life, meaning lively and energetic, or does it refer to the state of being, such as the life of the protagonist? I am hesitant to make strong conclusions or inferences about the content on Netflix. At first glance, the most frequent words "love," "life," "friends," and "family" appear to have optimistic, feel-good undertones when compared to words like "murder," "death," and "crime" that rank 25, 26, and 31, respectively. But again, the context is lacking unless I decide sift through every 8,807 descriptions in the database, a task far too tedious. Additionally, some of these words may appear many times in one description, or these keywords may be very abundant in specific genres. These words may not be an accurate representation of what most of the movies are about, but instead, a representation of a few, concentrated descriptions that repeat these words many times. 
+
+# Conclusion
 
 Take note of the default code chunk options in the `setup` code chunk, and adjust individual code chunk options as needed. for example, unlike the rest of the Rmd files we worked in this semester, the default code chunk option is `echo = FALSE`, so you will need to set `echo  = TRUE` for any code chunks you would like to display in the blog. 
-
 
 ## Including links and images/videos
 
@@ -279,34 +451,6 @@ Equations may be needed if you are explaining a new technique or perhaps providi
 * Display-style (displayed on its own line): $$\frac{\sigma^2_b}{\sigma^2_b + \sigma^2_e}$$
 
 For typesetting equations appropriately, take a look at the *Symbols in math mode* section of this  [cheat sheet](https://users.dickinson.edu/~richesod/latex/latexcheatsheet.pdf)  (or do some extra Googling---there are *many* resources).
-
-# Wordcloud of Description
-
-```{r}
-desc_frequencies <- read_csv("data/wordcloud.csv")
-
-# Word cloud will rearrange each time unless seed is set
-set.seed(53)
-
-# choose color palette from color brewer
-mypal <- brewer.pal(10, "Paired")
-
-wordcloud(words = desc_frequencies$word, 
-          freq = desc_frequencies$n,
-          min.freq = 20,
-          max.words = 75,
-          # plot the words in a random order
-          random.order = TRUE,
-          # specify the range of the size of the words
-          scale = c(3, 0.5),
-          # specify proportion of words with 90 degree rotation
-          rot.per = 0.15,
-          # colors words from least to most frequent
-          colors = mypal,
-          # font family
-          family = "sans")
-
-```
 
 
 # You can even create tabs within your webpage if you want! {.tabset .tabset-fade .tabset-pills}

@@ -9,7 +9,7 @@ library(shinyWidgets)
 library(plotly)
 
 # Import data
-platforms_all_genre_rating <- read_csv("platforms_all_genre_rating.csv")
+platforms_all_genre_Rotten <- read_csv("platforms_all_genre_Rotten.csv")
 
 ########################################################
 #  Choice values and labels for widgets (user inputs)  #                       
@@ -18,7 +18,7 @@ platforms_all_genre_rating <- read_csv("platforms_all_genre_rating.csv")
 # For TAB 1 Bar Graph widgets:
 
 ## For selectInput choices for Genre
-genre_choices <-  unique(platforms_all_genre_rating$Genres)
+genre_choices <-  unique(platforms_all_genre_Rotten$Genres)
 
 ############
 #    ui    #
@@ -63,7 +63,7 @@ server <- function(input, output){
   # Visualization 2: Bar Graph
   data_for_bar <- reactive({
     # Filtering dataset for year and species based off the user input
-    data <- filter(platforms_all_genre_rating, Genres %in% input$genre_bar)
+    data <- filter(platforms_all_genre_Rotten, Genres %in% input$genre_bar)
   })
   
   output$bar <- renderPlotly({
@@ -72,14 +72,14 @@ server <- function(input, output){
     ggplotly(ggplot(data = data_for_bar(), 
                     # Set Platform as x var and Average Rating as y var
                     # Fill the bars with color by species
-                    aes(x = Service, y = IMDb)) +
+                    aes(x = Service, y = RottenTomatoes)) +
                geom_bar(alpha = 0.7, stat = "identity", fill = c("#FF6666")) +
                # Label axes
-               labs(title = "Average IMDb Rating of Shows/Movies by Platform",
+               labs(title = "Average Rotten Tomatoes Rating of Content by Platform",
                     x = "Platform",
-                    y = "IMDb Rating (Out of 10)"),
+                    y = "Rotten Tomatoes Rating (Out of 100)"),
              # Only show amount when hovering
-             tooltip = "IMDb") 
+             tooltip = "RottenTomatoes") 
   })
   
 }

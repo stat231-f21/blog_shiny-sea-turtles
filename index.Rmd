@@ -255,6 +255,8 @@ knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/",
                    height = "600px")
 ```
 
+## Bar Chart
+
 *Findings:*
 
 From the bar chart, it appears that Disney+ is the best streaming platform for shows/movies in most genres. Hulu, Netflix, and Prime Video have the highest average IMDb ratings in only 7 of the genres. This makes sense given that Disney+ has a very selective catalog of shows/movies that have only been produced by Disney and are generally very high quality; the other platforms have content from many different sources, and that content is likely more variable in terms of quality. In addition, Disney has very loyal fans, so they probably write many IMDb reviews, boosting up the ratings of its content. For most of the genres, the differences between IMDb ratings are quite small between the platforms, so it is worth looking at multiple if you are not a Disney fan or have already seen most of the Disney movies. 
@@ -303,6 +305,19 @@ From the bar chart, it appears that Disney+ is the best streaming platform for s
 *Limitations:*
 
 This bar chart should be quite useful for people who enjoy a specific genre of movie/show and are deciding between which streaming platform to buy or browse, but there are some important things to note. The data used for the bar chart does not include all movies/shows on each streaming platform, so the IMDb scores may not be fully accurate, and, since the differences in scores are quite small between the platforms, the addition of all movies/shows on each platform may change the main results. Also, the bar chart doesn’t include other streaming platforms like Apple TV+ or HBO, and it doesn’t account for the fact that Netflix’s library may be much larger than Disney’s, which may influence someone’s decision making. It should be noted as well that the streaming platforms update their content libraries frequently, which would affect these average IMDb ratings. 
+
+## Table
+
+*Findings*
+
+The main interactive features of the table are the two-sided slider input, of which there are three: one for the year in which the movie came out, one for the Netflix rating, and one for the IMDb rating. Utilizing these features, the user can create a variety of sets of movies that will be displayed in the table based on the specified values. For example, if the “Years:” slider is set to 2021 and the IMDb ratings are arranged in descending order, we see that the movie with the highest IMDb rating in 2021 was “In Our Mother’s Garden” (2021, IMDb: 8.9, Rotten Tomatoes: 54, Netflix). Or, setting the “Years” slider to the range between 1991 and 2008, only consider titles with an IMDb score greater than or equal to 5, and arrange Rotten Tomatoes scores by ascending order, we see the movie with the lowest Rotten Tomatoes score is “Clay” (2008, IMDb: 5.5,  Rotten Tomatoes: 29, Prime Video). 
+
+The table displays information on some of the more important aspects we may wish to compare about different titles, which means that this “Findings” section could go on for quite a bit. In essence, the results of the table can be anything given the input parameters and varied and dense in nature. There is a large quantity of data included in this table, and the takeaway is up to the interpretation of the user. 
+
+*Limitations*
+
+The main limitation of the table comes from the lack of a checkbox feature in our table. While it does not take away from the purport of the table, it definitely leads to the display of more information than the user may have wanted. As of now, the “Services” column of the table displays each service and each combination of services separately. We initially intended to include a checkbox feature that splits the four streaming services, so that the user can specify which service or services they want to see movies from. However, this required numerous changes in the data wrangling stage; ultimately, we decided that our table still displays the most important information and did not add the checkbox feature. The main issue that arises due to our omitting this feature is that the user is much more likely to miss the combination of services that a movie can be found on. This is a feature that we hope to add to the table in the future to better streamline our display of such rich information. 
+
 
 # Network of Actors
 

@@ -292,7 +292,7 @@ The main limitation of the table comes from the lack of a checkbox feature in ou
 
 # Network of Actors
 
-```{r figure2 data wrangling, include = FALSE}
+```{r figure2 data wrangling, eval = FALSE, include= FALSE}
 # Some preliminary data wrangling that builds off of what has already been done, but formats specific to use for making network
 
 # read in csv files
@@ -336,9 +336,12 @@ people_igraph <- graph_from_data_frame(d = ed,
 
 ```
 
-```{r figure2 network}
+```{r, include = FALSE}
 # Read in network dataset
 people_network <- read_csv(file = 'people_network.csv')
+```
+
+```{r figure2 network}
 
 # visualization
 ggplot(data = people_network, aes(x = x, y = y, 

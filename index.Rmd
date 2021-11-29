@@ -68,7 +68,7 @@ Comparitech is site dedicated to technology research, and one of its [articles](
 [Google trends](https://trends.google.com/trends/?geo=US) collects data on the popularity of search queries on Google by location in a given time period. We used Google trends to get multiple datasets on popularity scores for the most popular Netflix Original shows (Money Heist, Stranger Things, Bridgerton, 13 Reasons Why, and Squid Game) by country since their debut. Google calculates a search query’s popularity score by country “on a scale from 0 to 100, where 100 is the location with the most popularity as a fraction of total searches in that location.” 
 
 
-```{r map extra wrangling, echo = FALSE}
+```{r map extra wrangling, include = FALSE}
 ## Quick extra wrangling for map data ##
 netflix_map_by_country <- read_csv(file = 'netflix_map_by_country.csv')
 netflix_subs_map <- read_csv(file = 'netflix_subs_map.csv')
@@ -292,7 +292,7 @@ The main limitation of the table comes from the lack of a checkbox feature in ou
 
 # Network of Actors
 
-```{r figure2 data wrangling, eval = FALSE}
+```{r figure2 data wrangling, include = FALSE}
 # Some preliminary data wrangling that builds off of what has already been done, but formats specific to use for making network
 
 # read in csv files

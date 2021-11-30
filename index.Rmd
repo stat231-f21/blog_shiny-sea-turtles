@@ -140,7 +140,7 @@ To create the maps, we performed data wrangling on the Kaggle dataset of Netflix
 
 We used the Kaggle dataset to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that dataset to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no content). 
 
-```{r map1, fig.width = 7}
+```{r map1, fig.width = 7.5}
 # Map of Netflix Shows/Films by Country
 ggplotly(ggplot() +
   # Get world map layer
@@ -180,7 +180,7 @@ This map could use more context, as it is unclear whether having 3,700 shows and
 
 We used the Comparitech table, converted to a `.csv` dataset, to create the map of number of Netflix subscribers in each country by joining it to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how many Netflix subscribers they have, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how many subscribers a country has compared to other countries (countries with a white fill had no subscriber numbers reported).
 
-```{r map2, fig.width = 7}
+```{r map2, fig.width = 7.5}
 # Map of Netflix Subscribers by Country
 ggplotly(ggplot() +
   # Get world map layer
@@ -220,7 +220,7 @@ For the Netflix subscribers map, there are only around 50 countries represented.
 
 We used the Google Trends datasets for some of Netflix’s most popular shows to create the map of most popular Netflix shows in each country by joining them into one dataset, which we then joined to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map, the most popular Netflix show in each country, and the popularity scores for all of the specified shows in each country. Viewers can also zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded based on which show is most popular in each country (countries with a white fill had data on popularity for any of the shows).
 
-```{r map3, fig.width = 7}
+```{r map3, fig.width = 7.5}
 # Map of Netflix Show Popularity by Country
 ggplotly(ggplot() +
   # Get world map layer

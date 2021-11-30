@@ -264,9 +264,10 @@ For this map, the popularity scores are based solely on people searching Strange
 
 The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the Kaggle dataset containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
 
-```{r, out.extra="data-external=1", fig.height = 4, fig.width = 7}
+```{r, out.extra="data-external=1", fig.height = 5, fig.width = 7.5}
 # Embed shiny app
-knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", height = "400px")
+knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
+                   height = "600px")
 ```
 
 ## Bar Chart
@@ -462,7 +463,7 @@ d <- d_words %>%
 
 ## Top 10 Words 
 
-```{r Plot Output, echo = FALSE}
+```{r Plot Output, echo = FALSE, fig.width = 7.5}
 ggplotly(d, tooltip = "n")
 ```
 

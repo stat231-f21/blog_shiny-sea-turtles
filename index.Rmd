@@ -11,18 +11,12 @@ output:
 ---
 
 ```{r setup, include = FALSE}
+# Load packages
 library(tidyverse)
-library(kableExtra)
-library(robotstxt) 
-library(rvest) 
-library(purrr)
-library(janitor)
 library(tidytext)
 library(wordcloud)
 library(textdata)
 library(sf)
-library(leaflet)
-library(kableExtra)
 library(viridis)
 library(plotly)
 library(ggnetwork)
@@ -41,12 +35,14 @@ options(knitr.kable.NA = '')
 # Introduction
 
 ```{r, fig.cap = "The Rise of Netflix's Stock Price"}
+# Add image
 knitr::include_graphics("https://media.giphy.com/media/vYHSRSor0Kaje/giphy.gif")
 ```
 
 ## Motivation: What is Intriguing about Netflix?
 
 ```{r, fig.cap = "Netflix's Transformation from DVDs to Streaming"}
+# Add image
 knitr::include_graphics("https://s3-prod.adage.com/s3fs-public/styles/800x600/public/20211001_netflixDreams_3x2_0.jpg")
 ```
 
@@ -55,6 +51,7 @@ Entertainment plays an important role in every human society, across time period
 ## Background: What is Netflix?
 
 ```{r, fig.cap = "Netflix's Content Library"}
+# Add image
 knitr::include_graphics("https://cdn.tmobile.com/content/dam/t-mobile/ntm/specific-use/netflix/bg/619306-bg-full-netflix-grid-v2.desktop.jpg")
 ```
 
@@ -68,6 +65,7 @@ Our group wanted each visualization to tell a different story. Our geographical 
 In order to answer our questions of interest, our data has detailed statistics and information relating to video streaming platforms, primarily Netflix, and shows/movies on these platforms. The data was collected from multiple sources, including two datasets from Kaggle, a table from Comparitech, and multiple datasets from Google Trends. 
 
 ```{r}
+# Add image
 knitr::include_graphics("http://www.endtoend.ai/assets/blog/tutorial/kaggle-dataset-ubuntu/kaggle.png")
 ```
  
@@ -76,12 +74,14 @@ knitr::include_graphics("http://www.endtoend.ai/assets/blog/tutorial/kaggle-data
 * The second [Kaggle dataset](https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney) used is a `.csv` file compiled by Ruchi Bhatia, a data scientist, display information about the Rotten Tomatoes and IMDb Ratings of just over 9,500 shows/movies on Netflix, Disney+, Amazon Prime Video, and Hulu released from 1914 to 2021. The Rotten Tomatoes score is determined by film critics while anyone can submit an IMDb Rating, so it is largely determined by fans and/or anti-fans of shows/movies. 
 
 ```{r}
+# Add image
 knitr::include_graphics("https://cdn.comparitech.com/wp-content/themes/comparitech-2018/img/logo.png")
 ```
 
 * Comparitech is site dedicated to technology research, and one of its [articles](https://www.comparitech.com/tv-streaming/netflix-subscribers/) has a table of Netflix revenue and subscribers by country for 2021. We copied this table into Microsoft Excel and converted it to a `.csv` file in order to use it for our visualizations. 
 
 ```{r}
+# Add image
 knitr::include_graphics("https://miro.medium.com/max/821/1*Fi6masemXJT3Q8YWekQCDQ.png")
 ```
 
@@ -91,7 +91,7 @@ knitr::include_graphics("https://miro.medium.com/max/821/1*Fi6masemXJT3Q8YWekQCD
 ```{r map extra wrangling, include = FALSE}
 ## Quick extra wrangling for map data that could not be done in wrangling file##
 
-# Read in datasets
+# Read in main datasets
 netflix_map_by_country <- read_csv(file = 'netflix_map_by_country.csv')
 netflix_subs_map <- read_csv(file = 'netflix_subs_map.csv')
 most_popular_show <- read_csv(file = 'most_popular_show_map.csv')
@@ -138,21 +138,27 @@ To create the maps, we performed data wrangling on the Kaggle dataset of Netflix
 
 ## Content Filming Locations
 
-We used the Kaggle dataset to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that dataset to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `ggplotly` package to achieve these features. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no content). 
+We used the Kaggle dataset to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that dataset to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no content). 
 
-```{r map1}
+```{r map1, fig.width = 7}
 # Map of Netflix Shows/Films by Country
 ggplotly(ggplot() +
+  # Get world map layer
   geom_sf(data = world_map, fill = "white") +
+  # Get Netflix amount of content by location layer
   geom_sf(data = netflix_map_shows, 
           aes(fill = Amount_of_Content, label = Country)) +
+  # Set color scale
   scale_fill_viridis(option = "viridis", direction = -1) +
   theme_void() +
+  # Rename Legend Title
   labs(fill = "Films/Shows") +
+  # Aesthetic changes to legend width, background color of map, and map size
   theme(legend.key.width = unit(.5,"cm"), 
         panel.background = element_rect(fill = "aliceblue"))+ 
   coord_sf(xlim = c(-180, 190), expand = FALSE), 
   height = 450) %>%
+  # Add in title
   layout(title = list(text = paste0('<br>',
                                     'Locations of Filming for Netflix Content',
                                     '<br>',
@@ -172,21 +178,27 @@ This map could use more context, as it is unclear whether having 3,700 shows and
 
 ## Subscribers
 
-We used the Comparitech table, converted to a `.csv` dataset, to create the map of number of Netflix subscribers in each country by joining it to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how many Netflix subscribers they have, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `ggplotly` package to achieve these features. The map is also color coded with a gradient based on how many subscribers a country has compared to other countries (countries with a white fill had no subscriber numbers reported).
+We used the Comparitech table, converted to a `.csv` dataset, to create the map of number of Netflix subscribers in each country by joining it to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how many Netflix subscribers they have, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how many subscribers a country has compared to other countries (countries with a white fill had no subscriber numbers reported).
 
-```{r map2}
+```{r map2, fig.width = 7}
 # Map of Netflix Subscribers by Country
 ggplotly(ggplot() +
+  # Get world map layer
   geom_sf(data = world_map, fill = "white") + 
+  # Get Netflix subscribers map layer
   geom_sf(data = netflix_subs_map, aes(fill = Number_of_Subscribers, 
                                        label = Country)) +
+  # Set color scale
   scale_fill_viridis(option = "viridis", direction = -1) +
   theme_void() +
+  # Set legend title
   labs(fill = "Subscribers") +
+  # Aesthetic changes to legend width, background color of map, and map size
   theme(legend.key.width = unit(.5,"cm"), 
         panel.background = element_rect(fill = "aliceblue")) + 
   coord_sf(xlim = c(-180, 190), expand = FALSE), 
   height = 450) %>%
+  # Add in title
   layout(title = list(text = paste0('<br>',
                                     'Netflix Subscribers',
                                     '<br>',
@@ -206,12 +218,14 @@ For the Netflix subscribers map, there are only around 50 countries represented.
 
 ## Show Popularity
 
-We used the Google Trends datasets for some of Netflix’s most popular shows to create the map of most popular Netflix shows in each country by joining them into one dataset, which we then joined to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map, the most popular Netflix show in each country, and the popularity scores for all of the specified shows in each country. Viewers can also zoom into the map to more closely examine specific continents or regions; we used the `ggplotly` package to achieve these features. The map is also color coded based on which show is most popular in each country (countries with a white fill had data on popularity for any of the shows).
+We used the Google Trends datasets for some of Netflix’s most popular shows to create the map of most popular Netflix shows in each country by joining them into one dataset, which we then joined to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map, the most popular Netflix show in each country, and the popularity scores for all of the specified shows in each country. Viewers can also zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded based on which show is most popular in each country (countries with a white fill had data on popularity for any of the shows).
 
-```{r map3}
+```{r map3, fig.width = 7}
 # Map of Netflix Show Popularity by Country
 ggplotly(ggplot() +
-  geom_sf(data = world_map, fill = "white") + 
+  # Get world map layer
+  geom_sf(data = world_map, fill = "white") +
+  # Get Netflix shows map layer
   geom_sf(data = netflix_popular_show_map, aes(fill = Most_Popular_Show, 
                                                label= Country,
                                                label2 = Bridgerton, 
@@ -220,10 +234,13 @@ ggplotly(ggplot() +
                                                label5 = StrangerThings,
                                                label6 = ThirteenReasonsWhy)) + 
   theme_void() +
+  # Set legend title
   labs(fill = "Show") +
+  # Aesthetic changes to legend width, background color of map, and map size
   theme(panel.background = element_rect(fill = "aliceblue")) + 
   coord_sf(xlim = c(-180, 190), expand = FALSE), 
   height = 450) %>%
+  # Add in title
   layout(title = list(
     text = paste0('<br>',
                   'Netflix Show Popularity',
@@ -248,8 +265,8 @@ For this map, the popularity scores are based solely on people searching Strange
 The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the Kaggle dataset containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
 
 ```{r, out.extra="data-external=1"}
-knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
-                   height = "600px")
+# Embed shiny app
+knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/")
 ```
 
 ## Bar Chart
@@ -468,5 +485,27 @@ knitr::include_graphics("https://www.howtogeek.com/wp-content/uploads/2020/09/Ar
 Overall, our visualizations displayed the diversity and scale of Netflix as a truly global streaming service with content and subscribers from around the World. In addition, they gave users the power to find content on Netflix they would be interested in and compare different platforms to subscribe to. The word cloud and network visualizations displayed the some of the key actors/actor combinations and words that Netflix uses for its content, likely because they attract more subscribers. 
 
 More specifically, it is apparent that the United States both produces the most content and has the largest number of subscribers on Netflix when compared to other countries in the data set. This makes sense considering that Netflix is, after all, an American streaming company with headquarters in California. Looking at the Content Location Map as well as the Subscribers Map, the colors for countries on each map are fairly similar, indicating some association. Since we used two different databases and didn’t run statistical tests on these variables, it is hard to conclude for certain if these two variables are correlated. Nonetheless, it very interesting to see this similarity on the maps. Next, while India produced about a third of the films that the U.S. produced, our network is dominated with Indian actors. There are far more edges and collaborations with Indian actors than with American or Japanese actors who were also vertices on the network. Additionally, there appears very few, if any, cross-country collaboration of actors. Finally, when considering and comparing various streaming platforms, it is quite evident that Disney+ dominates in highest-ranking (IMDb) shows/movies in nearly every genre. Our blog is not a complete picture of global Netflix trends; there are gaps in the geographical data and limits to all of our findings. More importantly, we hope that the graphical representations and customizable table searches can serve as effective tools for gaining some understanding into geographical and inter-platform data.
+
+# Bibliography
+
+Datasets
+
+* [Netflix Shows](https://www.kaggle.com/shivamb/netflix-shows)
+ 
+* [Shows on Multiple Platforms](https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney)
+
+* [Netflix Revenue and Subscribers](https://www.comparitech.com/tv-streaming/netflix-subscribers/)
+
+* [Google trends](https://trends.google.com/trends/?geo=US)
+
+Main Packages
+
+* `ggplot`
+* `plotly`
+* `ggnetwork`
+* `wordcloud`
+* `igraph`
+* `tidyverse`
+
 
 

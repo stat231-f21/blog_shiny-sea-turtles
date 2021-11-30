@@ -46,7 +46,7 @@ knitr::include_graphics("https://media.giphy.com/media/vYHSRSor0Kaje/giphy.gif")
 
 ## Motivation: What is Intriguing about Netflix?
 
-Entertainment plays an important role in every human society, across time periods and across geographical locations. From the micro to the macro level, each individual is trying to find a new and better way to keep themselves engaged. One of the most prominent forms of entertainment in our recent history is cinema, a multifaceted tool for both those seeking intellectual stimulation and a way to unwind and power down. In the past few decades, we have observed a gradual transition from going to the theaters and home video to on-demand through streaming platforms. The rise of such platforms, namely Netflix, may be attributed to tangibles such as consumer preferences, ease of access, and an enormous increase in selection. A consequence of this occurrence, however, is a rise in global connections through entertainment. Viewers now have access to a plethora of titles in various languages right at their fingertips, and the travelling of ideas across cultures, languages, and thought processes has never been easier. We aim to explore just how widespread a reach Netflix has by looking at its global distribution, emotional nuances depicted in films, and connections between artists that have worked in Netflix films. This exciting period in human history suggests promising growth and new understanding; however, it carries with it the possibility of broadcasting charged information or narratives. It is therefore our responsibility to study this tool and all its abilities in order to promote positive development. 
+Entertainment plays an important role in every human society, across time periods and across geographical locations. From the micro to the macro level, each individual is trying to find a new and better way to keep themselves engaged. One of the most prominent forms of entertainment in our recent history is cinema, a multifaceted tool for both those seeking intellectual stimulation and those hoping to unwind and power down. In the past few decades, we have observed a gradual transition from going to the theaters and home video to on-demand through streaming platforms. The rise of such platforms, namely Netflix, may be attributed to tangibles such as consumer preferences, ease of access, and an enormous increase in selection. A consequence of this occurrence, however, is a rise in global connections through entertainment. Viewers now have access to a plethora of titles in various languages right at their fingertips, and the travelling of ideas across cultures, languages, and thought processes has never been easier. We aim to explore just how widespread a reach Netflix has by looking at its global distribution, emotional nuances depicted in films, and connections between artists that have worked in Netflix films. This exciting period in human history suggests promising growth and new understanding; however, it carries with it the possibility of broadcasting charged information or narratives. It is therefore our responsibility to study this tool and all its abilities in order to promote positive development. 
 
 ## Background: What is Netflix?
 
@@ -279,13 +279,13 @@ This bar chart should be quite useful for people who enjoy a specific genre of m
 
 ## Table
 
-*Findings*
+*Findings:*
 
 The main interactive features of the table are the two-sided slider input, of which there are three: one for the year in which the movie came out, one for the Netflix rating, and one for the IMDb rating. Utilizing these features, the user can create a variety of sets of movies that will be displayed in the table based on the specified values. For example, if the “Years:” slider is set to 2021 and the IMDb ratings are arranged in descending order, we see that the movie with the highest IMDb rating in 2021 was “In Our Mother’s Garden” (2021, IMDb: 8.9, Rotten Tomatoes: 54, Netflix). Or, setting the “Years” slider to the range between 1991 and 2008, only consider titles with an IMDb score greater than or equal to 5, and arrange Rotten Tomatoes scores by ascending order, we see the movie with the lowest Rotten Tomatoes score is “Clay” (2008, IMDb: 5.5,  Rotten Tomatoes: 29, Prime Video). 
 
 The table displays information on some of the more important aspects we may wish to compare about different titles, which means that this “Findings” section could go on for quite a bit. In essence, the results of the table can be anything given the input parameters and varied and dense in nature. There is a large quantity of data included in this table, and the takeaway is up to the interpretation of the user. 
 
-*Limitations*
+*Limitations:*
 
 The main limitation of the table comes from the lack of a checkbox feature in our table. While it does not take away from the purport of the table, it definitely leads to the display of more information than the user may have wanted. As of now, the “Services” column of the table displays each service and each combination of services separately. We initially intended to include a checkbox feature that splits the four streaming services, so that the user can specify which service or services they want to see movies from. However, this required numerous changes in the data wrangling stage; ultimately, we decided that our table still displays the most important information and did not add the checkbox feature. The main issue that arises due to our omitting this feature is that the user is much more likely to miss the combination of services that a movie can be found on. This is a feature that we hope to add to the table in the future to better streamline our display of such rich information. 
 
@@ -353,17 +353,17 @@ ggplot(data = people_network, aes(x = x, y = y,
   labs(caption = "Actor Relationships")
 ```
 
-## Procedure
+*Procedure:*
 
 The purpose of the network visualization was to exhibit the connections between individuals who had worked on a variety of Netflix titles together; it provides information on the magnitude of common projects, and from the network we can extrapolate whether there are any high profile collaborations amongst artists across countries. 
 
 To create the visualization, a bit of data wrangling was performed on the original dataset from Kaggle that included thousands of Netflix titles. From this original dataset, two dataframes were created: one that included the names and roles of the 20 actors that worked on the greatest number of projects which served as the vertices dataframe, and a cross-product matrix was created to form the basis of the edges dataframe. In the final visualization, dots are labeled with the name of the individual, and the thickness of the edge between any two nodes represents the number of projects that the two individuals have worked on together. 
 
-## Findings
+*Findings:*
 
 From the visualization, we see that actors like Boman Irani and Kareena Kapoor have worked with a large variety of actors across their projects (as there are a good number of edges that extend from these nodes), while other actors like Jigna Bhardwaj and Julie Tejwani that have not worked with as high a variety of other actors but have worked on a great number of projects with a small group. Three nodes does not have any edges; John Cleese, Samuel L. Jackson and Fred Tatasciore, who have both worked on a very high number of Netflix films but none in common with the other popular Netflix actors. This may be explained by the fact that except for John Cleese, Andrea Libman, Vincent Tong, Fred Tatasciore, Samuel L. Jackson, Yuki Kaji, and Takahiro Sakurai, all other actors in the diagram are Indian. Not only do Indian actors act in a large number of Netflix films - or, not only do Indian films comprise a large amount of Netflix films - the same Indian actors seem to have worked together on many films. There is also little cross connection between actors working in different countries - while such cross connection may exist, the network shows that it is not as common an occurrence amongst the most sought-after actors on Netflix. 
 
-## Limitations
+*Limitations:*
 
 Though the network is a very useful visualization and offers a variety of information, it still has its limitations. One such limitation is in its display of color. The original idea of the network was to color nodes based on whether the individual in question was an actor or director. However, since the individuals that worked on the greatest number of films were all actors, this distinction was unable to be brought forth. A more useful method to color the nodes would have been by country; this would have required a complete reconstruction of the data wrangling process and it was ultimately decided that this information would be redundant as a geographical visualization would also be displayed separately. It is ultimately still a drawback of the network (as the network does not display information to its potential), but it is something to keep in mind for a future visualization of this data. 
 
@@ -435,6 +435,6 @@ The main limit to this word cloud is the lack of context. It is impossible to de
 
 # Conclusion
 
-
+Solely based on the data sets that we used, it is apparent that the United States both produces the most content, and has the largest number of subsribers on Netflix when compared to other countries in the data set. Logically, this makes sense considering that Netflix is, after all, an American streaming company with headquarters in California. Looking at the Content Location Map as well as the Subscribers Map, the colors are similar. Since we used two different databases and didn’t run statistical tests on these variables, it is hard to conclude for certain if these two variables are correlated. Nonetheless, it very interesting to see this similarity on the maps. Next, while India produced about a third of the films that the U.S. produced, our network is dominated with Indian actors. There are far more edges and collaborations with Indian actors than with American or Japanese actors who were also vertices on the network. Additionally, there appears very few, if any, cross-country collaboration of actors. Finally, when considering and comparing various streaming platforms, it is quite evident that Disney+ dominates in highest-ranking (IMDb) shows/movies in nearly every genre. Our blog is not a complete picture of global Netflix trends; there are gaps in the geographical data and limits to all of our findings. More importantly, we hope that the graphical representations and customizable table searches can serve as effective tools for gaining some understanding into geographical and inter-platform data.
 
 

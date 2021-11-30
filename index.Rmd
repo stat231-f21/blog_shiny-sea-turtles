@@ -89,7 +89,7 @@ knitr::include_graphics("https://miro.medium.com/max/821/1*Fi6masemXJT3Q8YWekQCD
 
 
 ```{r map extra wrangling, include = FALSE}
-## Quick extra wrangling for map data ##
+## Quick extra wrangling for map data that could not be done in wrangling file##
 
 # Read in datasets
 netflix_map_by_country <- read_csv(file = 'netflix_map_by_country.csv')

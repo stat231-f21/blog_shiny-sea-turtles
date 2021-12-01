@@ -21,6 +21,7 @@ library(viridis)
 library(plotly)
 library(ggnetwork)
 library(igraph)
+library(expss)
 
 # Set code chunk defaults 
 knitr::opts_chunk$set(echo = FALSE, 
@@ -111,6 +112,10 @@ netflix_map_shows <- world_map %>%
 netflix_map_shows <- netflix_map_shows %>%
   rename(Country = ID, Amount_of_Content =  number_of_films)
 
+# Add labels
+netflix_map_shows = apply_labels(netflix_map_shows,
+                                 Amount_of_Content = "Amount of Content")
+
 # Join world map and subs/revenue datasets
 netflix_subs_map <- world_map %>%
   inner_join(netflix_subs_map, by = "ID")
@@ -119,6 +124,10 @@ netflix_subs_map <- world_map %>%
 netflix_subs_map <- netflix_subs_map %>%
   rename(Country = ID)
 
+# Add labels
+netflix_subs_map = apply_labels(netflix_subs_map,
+                                Number_of_Subscribers = "Number of Subscribers")
+
 # Join world map and popular show datasets
 netflix_popular_show_map <- world_map %>%
   inner_join(most_popular_show, by = "ID")
@@ -126,6 +135,14 @@ netflix_popular_show_map <- world_map %>%
 # rename ID
 netflix_popular_show_map <- netflix_popular_show_map %>%
   rename(Country = ID)
+
+# Add labels
+netflix_popular_show_map = apply_labels(netflix_popular_show_map,
+                                        Most_Popular_Show = "Most Popular Show",                      
+                                        StrangerThings = "Stranger Things",
+                                        MoneyHeist = "Money Heist",
+                                        SquidGame = "Squid Game",
+                                        ThirteenReasonsWhy = "13 Reasons Why")
 ```
 
 # Maps {.tabset .tabset-fade .tabset-pills}
@@ -149,7 +166,7 @@ netflix_map <- netflix_shows %>%
 
 ```{r map1, fig.width = 7.5}
 # Map of Netflix Shows/Films by Country
-ggplotly(ggplot() +
+use_labels(netflix_map_shows, ggplotly(ggplot() +
   # Get world map layer
   geom_sf(data = world_map, fill = "white") +
   # Get Netflix amount of content by location layer
@@ -172,7 +189,7 @@ ggplotly(ggplot() +
                                     '<sup>',
                                     'Added From 2014 to 2021',
                                     '</sup>'), 
-                      xref = "paper", xanchor = "center"))
+                      xref = "paper", xanchor = "center")))
 ```
 
 *Findings:*
@@ -189,7 +206,7 @@ We used the Comparitech table, converted to a `.csv` dataset, to create the map 
 
 ```{r map2, fig.width = 7.5}
 # Map of Netflix Subscribers by Country
-ggplotly(ggplot() +
+use_labels(netflix_subs_map, ggplotly(ggplot() +
   # Get world map layer
   geom_sf(data = world_map, fill = "white") + 
   # Get Netflix subscribers map layer
@@ -212,7 +229,7 @@ ggplotly(ggplot() +
                                     '<sup>',
                                     'As of Q2 2021; In Thousands of People',
                                     '</sup>'), 
-                      xref = "paper", xanchor = "center"))
+                      xref = "paper", xanchor = "center")))
 ```
 
 *Findings:*
@@ -237,7 +254,7 @@ most_popular_show <- shows_popularity_master_long %>%
 
 ```{r map3, fig.width = 7.5}
 # Map of Netflix Show Popularity by Country
-ggplotly(ggplot() +
+use_labels(netflix_popular_show_map, ggplotly(ggplot() +
   # Get world map layer
   geom_sf(data = world_map, fill = "white") +
   # Get Netflix shows map layer
@@ -262,7 +279,7 @@ ggplotly(ggplot() +
                   '<br>',
                   '<sup>',
                   'Since the Debut of Each Show; Score from Google Trends',
-                  '</sup>'), xref = "paper", xanchor = "center"))
+                  '</sup>'), xref = "paper", xanchor = "center")))
 ```
 
 *Findings:*
@@ -293,9 +310,6 @@ platforms_all_genre_rating <- platforms_all_genre %>%
 knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
                    height = "600px")
 ```
-
-<iframe height="500" width="100%" frameborder="no" 
-src="https://devendesai.shinyapps.io/blog_shiny-sea-turtles/"> </iframe>
 
 ## Bar Chart
 
@@ -534,6 +548,7 @@ Main Packages
 * `wordcloud`
 * `igraph`
 * `tidyverse`
+* `expss`
 
 
 

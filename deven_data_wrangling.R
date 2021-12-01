@@ -12,6 +12,7 @@ library(leaflet)
 library(kableExtra)
 library(viridis)
 library(plotly)
+library(expss)
 
 # reading in csv
 
@@ -192,6 +193,23 @@ most_popular_show <- most_popular_show[most_popular_show$PopularityScore != 0, ]
 # Join most popular show and all shows datasets
 shows_popularity_full <- most_popular_show %>% 
   left_join(shows_popularity_master)
+
+# Rename most popular shows to be more user readable
+
+shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
+                             == "ThirteenReasonsWhy"] <- "Thirteen Reasons Why"
+shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
+                                      == "StrangerThings"] <- "Stranger Things"
+shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
+                                        == "MoneyHeist"] <- "Money Heist"
+shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
+                                        == "SquidGame"] <- "Squid Game"
+
+# Add labels
+
+shows_popularity_full = apply_labels(shows_popularity_full,
+               StrangerThings = "Stranger Things"
+)
 
 # Join world map and popular show datasets
 netflix_popular_show_map <- world_map %>%

@@ -294,6 +294,9 @@ knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/",
                    height = "600px")
 ```
 
+<iframe height="500" width="100%" frameborder="no" 
+src="https://devendesai.shinyapps.io/blog_shiny-sea-turtles/"> </iframe>
+
 ## Bar Chart
 
 *Findings:*

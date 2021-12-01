@@ -292,9 +292,14 @@ For this map, the popularity scores are based solely on people searching Strange
 
 # Shiny App
 
-*Procedure:*
+*Bar Chart Procedure:*
 
 The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the Kaggle dataset containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
+
+*Table Procedure:*
+
+The table is notable in its ability to display large quantities of information in a streamlined manner. In order to achieve this, we created a dataframe from the original Kaggle dataset (which included over 9000 observations) and selected the variables of interest “Year”, “Title”, “IMDb”, “RottenTomatoes”, and “Service”. The variables “Year”, “IMDb”, and “RottenTomatoes” were used for two-sided slider inputs, allowing the user to specify the ranges of each that they want to look at. The “Service” variable is not interactive, but gives information on the streaming platform or platforms that the title is found on. This can further be narrowed using the search bar at the top. 
+
 
 ```{r, eval = FALSE, echo = TRUE}
 # Get average IMDb rating for each platform by genre

@@ -275,6 +275,8 @@ For this map, the popularity scores are based solely on people searching Strange
 
 # Shiny App
 
+## Bar Chart
+
 *Procedure:*
 
 The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the Kaggle dataset containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
@@ -293,8 +295,6 @@ platforms_all_genre_rating <- platforms_all_genre %>%
 knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
                    height = "600px")
 ```
-
-## Bar Chart
 
 *Findings:*
 
@@ -346,6 +346,11 @@ From the bar chart, it appears that Disney+ is the best streaming platform for s
 This bar chart should be quite useful for people who enjoy a specific genre of movie/show and are deciding between which streaming platform to buy or browse, but there are some important things to note. The data used for the bar chart does not include all movies/shows on each streaming platform, so the IMDb scores may not be fully accurate, and, since the differences in scores are quite small between the platforms, the addition of all movies/shows on each platform may change the main results. Also, the bar chart doesn’t include other streaming platforms like Apple TV+ or HBO, and it doesn’t account for the fact that Netflix’s library may be much larger than Disney’s, which may influence someone’s decision making. It should be noted as well that the streaming platforms update their content libraries frequently, which would affect these average IMDb ratings. 
 
 ## Table
+
+*Procedure:*
+
+The table is notable in its ability to display large quantities of information in a streamlined manner. In order to achieve this, we created a dataframe from the original Kaggle dataset (which included over 9000 observations) and selected the variables of interest “Year”, “Title”, “IMDb”, “RottenTomatoes”, and “Service”. The variables “Year”, “IMDb”, and “RottenTomatoes” were used for two-sided slider inputs, allowing the user to specify the ranges of each that they want to look at. The “Service” variable is not interactive, but gives information on the streaming platform or platforms that the title is found on. This can further be narrowed using the search bar at the top. 
+
 
 *Findings:*
 

@@ -140,6 +140,13 @@ To create the maps, we performed data wrangling on the Kaggle dataset of Netflix
 
 We used the Kaggle dataset to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that dataset to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no content). 
 
+```{r, eval = FALSE, echo = TRUE}
+# If movies have multiple countries, make a new row for each country
+netflix_map <- netflix_shows %>%
+  unnest_tokens(output = country, input = country, token = "regex", 
+                pattern = c(", ",","))
+```
+
 ```{r map1, fig.width = 7.5}
 # Map of Netflix Shows/Films by Country
 ggplotly(ggplot() +
@@ -220,6 +227,14 @@ For the Netflix subscribers map, there are only around 50 countries represented.
 
 We used the Google Trends datasets for some of Netflix’s most popular shows to create the map of most popular Netflix shows in each country by joining them into one dataset, which we then joined to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map, the most popular Netflix show in each country, and the popularity scores for all of the specified shows in each country. Viewers can also zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded based on which show is most popular in each country (countries with a white fill had data on popularity for any of the shows).
 
+```{r, eval = FALSE, echo = TRUE}
+# Get most popular show for each country
+most_popular_show <- shows_popularity_master_long %>% 
+  group_by(ID) %>% 
+  top_n(1, PopularityScore) %>%
+  slice(which.max(PopularityScore))
+```
+
 ```{r map3, fig.width = 7.5}
 # Map of Netflix Show Popularity by Country
 ggplotly(ggplot() +
@@ -263,6 +278,15 @@ For this map, the popularity scores are based solely on people searching Strange
 *Procedure:*
 
 The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the Kaggle dataset containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
+
+```{r, eval = FALSE, echo = TRUE}
+# Get average IMDb rating for each platform by genre
+platforms_all_genre_rating <- platforms_all_genre %>%
+  na.omit(platforms_all_genre$IMDb, platforms_all_genre$Genres) %>%
+  group_by(Service, Genres) %>%
+  summarise_at(vars(IMDb), list(IMDb = mean))
+```
+
 
 ```{r, out.extra="data-external=1", fig.height = 5, fig.width = 7.5}
 # Embed shiny app

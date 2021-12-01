@@ -193,6 +193,17 @@ most_popular_show <- most_popular_show[most_popular_show$PopularityScore != 0, ]
 shows_popularity_full <- most_popular_show %>% 
   left_join(shows_popularity_master)
 
+# Rename most popular shows to be more user readable
+
+shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
+                             == "ThirteenReasonsWhy"] <- "Thirteen Reasons Why"
+shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
+                                      == "StrangerThings"] <- "Stranger Things"
+shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
+                                        == "MoneyHeist"] <- "Money Heist"
+shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
+                                        == "SquidGame"] <- "Squid Game"
+
 # Join world map and popular show datasets
 netflix_popular_show_map <- world_map %>%
   inner_join(shows_popularity_full, by = "ID")

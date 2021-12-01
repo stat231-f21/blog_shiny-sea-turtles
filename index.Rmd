@@ -21,6 +21,7 @@ library(viridis)
 library(plotly)
 library(ggnetwork)
 library(igraph)
+library(expss)
 
 # Set code chunk defaults 
 knitr::opts_chunk$set(echo = FALSE, 
@@ -111,6 +112,10 @@ netflix_map_shows <- world_map %>%
 netflix_map_shows <- netflix_map_shows %>%
   rename(Country = ID, Amount_of_Content =  number_of_films)
 
+# Add labels
+netflix_map_shows = apply_labels(netflix_map_shows,
+                                 Amount_of_Content = "Amount of Content")
+
 # Join world map and subs/revenue datasets
 netflix_subs_map <- world_map %>%
   inner_join(netflix_subs_map, by = "ID")
@@ -119,6 +124,10 @@ netflix_subs_map <- world_map %>%
 netflix_subs_map <- netflix_subs_map %>%
   rename(Country = ID)
 
+# Add labels
+netflix_subs_map = apply_labels(netflix_subs_map,
+                                Number_of_Subscribers = "Number of Subscribers")
+
 # Join world map and popular show datasets
 netflix_popular_show_map <- world_map %>%
   inner_join(most_popular_show, by = "ID")
@@ -126,6 +135,14 @@ netflix_popular_show_map <- world_map %>%
 # rename ID
 netflix_popular_show_map <- netflix_popular_show_map %>%
   rename(Country = ID)
+
+# Add labels
+netflix_popular_show_map = apply_labels(netflix_popular_show_map,
+                                        Most_Popular_Show = "Most Popular Show",                      
+                                        StrangerThings = "Stranger Things",
+                                        MoneyHeist = "Money Heist",
+                                        SquidGame = "Squid Game",
+                                        ThirteenReasonsWhy = "13 Reasons Why")
 ```
 
 # Maps {.tabset .tabset-fade .tabset-pills}
@@ -149,7 +166,7 @@ netflix_map <- netflix_shows %>%
 
 ```{r map1, fig.width = 7.5}
 # Map of Netflix Shows/Films by Country
-ggplotly(ggplot() +
+use_labels(netflix_map_shows, ggplotly(ggplot() +
   # Get world map layer
   geom_sf(data = world_map, fill = "white") +
   # Get Netflix amount of content by location layer
@@ -172,7 +189,7 @@ ggplotly(ggplot() +
                                     '<sup>',
                                     'Added From 2014 to 2021',
                                     '</sup>'), 
-                      xref = "paper", xanchor = "center"))
+                      xref = "paper", xanchor = "center")))
 ```
 
 *Findings:*
@@ -189,7 +206,7 @@ We used the Comparitech table, converted to a `.csv` dataset, to create the map 
 
 ```{r map2, fig.width = 7.5}
 # Map of Netflix Subscribers by Country
-ggplotly(ggplot() +
+use_labels(netflix_subs_map, ggplotly(ggplot() +
   # Get world map layer
   geom_sf(data = world_map, fill = "white") + 
   # Get Netflix subscribers map layer
@@ -212,7 +229,7 @@ ggplotly(ggplot() +
                                     '<sup>',
                                     'As of Q2 2021; In Thousands of People',
                                     '</sup>'), 
-                      xref = "paper", xanchor = "center"))
+                      xref = "paper", xanchor = "center")))
 ```
 
 *Findings:*
@@ -237,7 +254,7 @@ most_popular_show <- shows_popularity_master_long %>%
 
 ```{r map3, fig.width = 7.5}
 # Map of Netflix Show Popularity by Country
-ggplotly(ggplot() +
+use_labels(netflix_popular_show_map, ggplotly(ggplot() +
   # Get world map layer
   geom_sf(data = world_map, fill = "white") +
   # Get Netflix shows map layer
@@ -262,7 +279,7 @@ ggplotly(ggplot() +
                   '<br>',
                   '<sup>',
                   'Since the Debut of Each Show; Score from Google Trends',
-                  '</sup>'), xref = "paper", xanchor = "center"))
+                  '</sup>'), xref = "paper", xanchor = "center")))
 ```
 
 *Findings:*
@@ -275,11 +292,14 @@ For this map, the popularity scores are based solely on people searching Strange
 
 # Shiny App
 
-## Bar Chart
-
-*Procedure:*
+*Bar Chart Procedure:*
 
 The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the Kaggle dataset containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
+
+*Table Procedure:*
+
+The table is notable in its ability to display large quantities of information in a streamlined manner. In order to achieve this, we created a dataframe from the original Kaggle dataset (which included over 9000 observations) and selected the variables of interest “Year”, “Title”, “IMDb”, “RottenTomatoes”, and “Service”. The variables “Year”, “IMDb”, and “RottenTomatoes” were used for two-sided slider inputs, allowing the user to specify the ranges of each that they want to look at. The “Service” variable is not interactive, but gives information on the streaming platform or platforms that the title is found on. This can further be narrowed using the search bar at the top. 
+
 
 ```{r, eval = FALSE, echo = TRUE}
 # Get average IMDb rating for each platform by genre
@@ -295,6 +315,8 @@ platforms_all_genre_rating <- platforms_all_genre %>%
 knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
                    height = "600px")
 ```
+
+## Bar Chart
 
 *Findings:*
 
@@ -346,11 +368,6 @@ From the bar chart, it appears that Disney+ is the best streaming platform for s
 This bar chart should be quite useful for people who enjoy a specific genre of movie/show and are deciding between which streaming platform to buy or browse, but there are some important things to note. The data used for the bar chart does not include all movies/shows on each streaming platform, so the IMDb scores may not be fully accurate, and, since the differences in scores are quite small between the platforms, the addition of all movies/shows on each platform may change the main results. Also, the bar chart doesn’t include other streaming platforms like Apple TV+ or HBO, and it doesn’t account for the fact that Netflix’s library may be much larger than Disney’s, which may influence someone’s decision making. It should be noted as well that the streaming platforms update their content libraries frequently, which would affect these average IMDb ratings. 
 
 ## Table
-
-*Procedure:*
-
-The table is notable in its ability to display large quantities of information in a streamlined manner. In order to achieve this, we created a dataframe from the original Kaggle dataset (which included over 9000 observations) and selected the variables of interest “Year”, “Title”, “IMDb”, “RottenTomatoes”, and “Service”. The variables “Year”, “IMDb”, and “RottenTomatoes” were used for two-sided slider inputs, allowing the user to specify the ranges of each that they want to look at. The “Service” variable is not interactive, but gives information on the streaming platform or platforms that the title is found on. This can further be narrowed using the search bar at the top. 
-
 
 *Findings:*
 
@@ -536,6 +553,7 @@ Main Packages
 * `wordcloud`
 * `igraph`
 * `tidyverse`
+* `expss`
 
 
 

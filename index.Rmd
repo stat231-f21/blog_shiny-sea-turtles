@@ -247,8 +247,7 @@ We used the Google Trends datasets for some of Netflix’s most popular shows to
 ```{r, eval = FALSE, echo = TRUE}
 # Get most popular show for each country
 most_popular_show <- shows_popularity_master_long %>% 
-  group_by(ID) %>% 
-  top_n(1, PopularityScore) %>%
+  group_by(ID) %>%
   slice(which.max(PopularityScore))
 ```
 

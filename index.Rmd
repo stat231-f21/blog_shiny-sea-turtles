@@ -155,7 +155,7 @@ To create the maps, we performed data wrangling on the Kaggle dataset of Netflix
 
 ## Content Filming Locations
 
-We used the Kaggle dataset to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that dataset to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no content). 
+We used the [Kaggle dataset](https://www.kaggle.com/shivamb/netflix-shows) to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that dataset to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no content). 
 
 ```{r, eval = FALSE, echo = TRUE}
 # If movies have multiple countries, make a new row for each country
@@ -173,7 +173,8 @@ use_labels(netflix_map_shows, ggplotly(ggplot() +
   geom_sf(data = netflix_map_shows, 
           aes(fill = Amount_of_Content, label = Country)) +
   # Set color scale
-  scale_fill_viridis(option = "viridis", direction = -1) +
+  scale_fill_viridis(option = "viridis", direction = -1, 
+                     breaks = c(1, 1000, 2000, 3000, 3690)) +
   theme_void() +
   # Rename Legend Title
   labs(fill = "Films/Shows") +
@@ -202,7 +203,7 @@ This map could use more context, as it is unclear whether having 3,700 shows and
 
 ## Subscribers
 
-We used the Comparitech table, converted to a `.csv` dataset, to create the map of number of Netflix subscribers in each country by joining it to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how many Netflix subscribers they have, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how many subscribers a country has compared to other countries (countries with a white fill had no subscriber numbers reported).
+We used the [Comparitech table](https://www.comparitech.com/tv-streaming/netflix-subscribers/), converted to a `.csv` dataset, to create the map of number of Netflix subscribers in each country by joining it to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how many Netflix subscribers they have, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how many subscribers a country has compared to other countries (countries with a white fill had no subscriber numbers reported).
 
 ```{r map2, fig.width = 7.5}
 # Map of Netflix Subscribers by Country
@@ -213,7 +214,8 @@ use_labels(netflix_subs_map, ggplotly(ggplot() +
   geom_sf(data = netflix_subs_map, aes(fill = Number_of_Subscribers, 
                                        label = Country)) +
   # Set color scale
-  scale_fill_viridis(option = "viridis", direction = -1) +
+  scale_fill_viridis(option = "viridis", direction = -1,
+                     breaks = c(31, 17000, 34000, 51000, 67278)) +
   theme_void() +
   # Set legend title
   labs(fill = "Subscribers") +
@@ -242,7 +244,7 @@ For the Netflix subscribers map, there are only around 50 countries represented.
 
 ## Show Popularity
 
-We used the Google Trends datasets for some of Netflix’s most popular shows to create the map of most popular Netflix shows in each country by joining them into one dataset, which we then joined to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map, the most popular Netflix show in each country, and the popularity scores for all of the specified shows in each country. Viewers can also zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded based on which show is most popular in each country (countries with a white fill had data on popularity for any of the shows).
+We used the [Google Trends](https://trends.google.com/trends/?geo=US) datasets for some of Netflix’s most popular shows to create the map of most popular Netflix shows in each country by joining them into one dataset, which we then joined to a world map dataset containing the coordinates of each country. In the main visualization, there is a hover feature that allows users to identify countries on the map, the most popular Netflix show in each country, and the popularity scores for all of the specified shows in each country. Viewers can also zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded based on which show is most popular in each country (countries with a white fill had data on popularity for any of the shows).
 
 ```{r, eval = FALSE, echo = TRUE}
 # Get most popular show for each country
@@ -291,17 +293,17 @@ For this map, the popularity scores are based solely on people searching Strange
 
 # Shiny App
 
-```{r, out.extra="data-external=1", fig.height = 5, fig.width = 7.5}
+```{r, out.extra="data-external=1", fig.height = 7, fig.width = 7.5, frameborder="no", out.width = "100%"}
 # Embed shiny app
 knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
-                   height = "600px")
+                   height = "400px")
 ```
 
 ## Bar Chart
 
 *Procedure:*
 
-The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the Kaggle dataset containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
+The purpose of the bar chart was to determine which streaming platform a person should use based on the genre of the show/movie they prefer. We wrangled the [Kaggle dataset](https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney) containing rating information of shows/movies on multiple streaming platforms in order to achieve this. We grouped the show/movie titles by genre and platform and then determined the average IMDb score for each genre on each platform. There is a hover feature that allows users to see the exact average IMDb score of each platform for a given genre, and users can toggle between all of the genres using the dropdown menu.
 
 ```{r, eval = FALSE, echo = TRUE}
 # Get average IMDb rating for each platform by genre
@@ -317,44 +319,28 @@ From the bar chart, it appears that Disney+ is the best streaming platform for s
 
 **The best platform to use for different genres (based on average IMDb rating):**
 
-**Disney+:**
-
-* Action
-* Adventure
-* Animation
-* Biography
-* Comedy
-* Drama
-* Family
-* Fantasy
-* Game-Show
-* History
-* Horror
-* Musical
-* Mystery
-* News
-* Reality-TV
-* Romance
-* Sci-Fi
-* Short
-* Talk-Show
-* Thriller
-
-**Hulu:**
-
-* Crime
-* Sport
-* Western
-
-**Netflix:**
-
-* Music
-* War
-
-**Prime Video:**
-
-* Documentary
-* Film-Noir
+|Disney+ | Hulu | Netflix | Amazon Prime
+|:---|:---|:---|:---|
+| Action | Crime | Music | Documentary
+| Adventure | Sport | War | Film-Noir
+| Animation | Western
+| Biography
+| Comedy
+| Drama
+| Family
+| Fantasy
+| Game-Show
+| History
+| Horror
+| Musical
+| Mystery
+| News
+| Reality-TV
+| Romance
+| Sci-Fi
+| Short
+| Talk-Show
+| Thriller
 
 *Limitations:*
 
@@ -364,7 +350,7 @@ This bar chart should be quite useful for people who enjoy a specific genre of m
 
 *Procedure:*
 
-The table is notable in its ability to display large quantities of information in a streamlined manner. In order to achieve this, we created a dataframe from the original Kaggle dataset (which included over 9000 observations) and selected the variables of interest “Year”, “Title”, “IMDb”, “RottenTomatoes”, and “Service”. The variables “Year”, “IMDb”, and “RottenTomatoes” were used for two-sided slider inputs, allowing the user to specify the ranges of each that they want to look at. The “Service” variable is not interactive, but gives information on the streaming platform or platforms that the title is found on. This can further be narrowed using the search bar at the top. 
+The table is notable in its ability to display large quantities of information in a streamlined manner. In order to achieve this, we created a dataframe from the second [Kaggle dataset](https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney) (which included over 9000 observations) and selected the variables of interest “Year”, “Title”, “IMDb”, “RottenTomatoes”, and “Service”. The variables “Year”, “IMDb”, and “RottenTomatoes” were used for two-sided slider inputs, allowing the user to specify the ranges of each that they want to look at. The “Service” variable is not interactive, but gives information on the streaming platform or platforms that the title is found on. This can further be narrowed using the search bar at the top. 
 
 *Findings:*
 
@@ -444,7 +430,7 @@ ggplot(data = people_network, aes(x = x, y = y,
 
 The purpose of the network visualization was to exhibit the connections between individuals who had worked on a variety of Netflix titles together; it provides information on the magnitude of common projects, and from the network we can extrapolate whether there are any high profile collaborations amongst artists across countries. 
 
-To create the visualization, a bit of data wrangling was performed on the original dataset from Kaggle that included thousands of Netflix titles. From this original dataset, two dataframes were created: one that included the names and roles of the 20 actors that worked on the greatest number of projects which served as the vertices dataframe, and a cross-product matrix was created to form the basis of the edges dataframe. In the final visualization, dots are labeled with the name of the individual, and the thickness of the edge between any two nodes represents the number of projects that the two individuals have worked on together. 
+To create the visualization, a bit of data wrangling was performed on the original [Kaggle dataset](https://www.kaggle.com/shivamb/netflix-shows) that included thousands of Netflix titles. From this original dataset, two dataframes were created: one that included the names and roles of the 20 actors that worked on the greatest number of projects which served as the vertices dataframe, and a cross-product matrix was created to form the basis of the edges dataframe. In the final visualization, dots are labeled with the name of the individual, and the thickness of the edge between any two nodes represents the number of projects that the two individuals have worked on together. 
 
 *Findings:*
 
@@ -514,7 +500,7 @@ ggplotly(d, tooltip = "n")
 
 *Findings:*
 
-Our word cloud was created from a desire to explore the most prevalent keywords across all Netflix descriptions. As for the code, the word cloud was incredibly simple. Using the Kaggle data table, the wrangling merely consisted of isolating each word of the description and removing all stop words. This word cloud consists of the top 100 most frequent words, with the condition that the word must occur at least 20 times. The words are also ordered with most frequent in the middle and least frequent on the outside. The size and color of the words are proportional to their frequency. The color of the words are associated with their abundance, going from cool to warm colors. Cool colors such as light blues and greens are also the smallest on the outskirts of the circle, meaning they occur lest frequently than the words in warmer colors such as dark green, red, yellow, orange, and finally, purple. Accompanying the `wordcloud` is a `ggplotly` table with the top 10 most common words in all Netflix descriptions, ordered by the number of instances, n. I find it interesting how much of an outlier the most frequent word, "life," is when compared to the other nine. The word “life” appeared 833 times, while the other nine most common words occurred between 300 and 500 times. The top six words seem to have very lighthearted, positive connotations: life, family, world, love, woman, and friends. Based on the frequency plot, it appears that Netflix series were slightly more abundant than Netflix documentaries. However, the major limitation to this word cloud is the lack of context.
+Our word cloud was created from a desire to explore the most prevalent keywords across all Netflix descriptions. As for the code, the word cloud was incredibly simple. Using the [Kaggle dataset](https://www.kaggle.com/shivamb/netflix-shows), the wrangling merely consisted of isolating each word of the description and removing all stop words. This word cloud consists of the top 100 most frequent words, with the condition that the word must occur at least 20 times. The words are also ordered with most frequent in the middle and least frequent on the outside. The size and color of the words are proportional to their frequency. The color of the words are associated with their abundance, going from cool to warm colors. Cool colors such as light blues and greens are also the smallest on the outskirts of the circle, meaning they occur lest frequently than the words in warmer colors such as dark green, red, yellow, orange, and finally, purple. Accompanying the `wordcloud` is a `ggplotly` table with the top 10 most common words in all Netflix descriptions, ordered by the number of instances, n. I find it interesting how much of an outlier the most frequent word, "life," is when compared to the other nine. The word “life” appeared 833 times, while the other nine most common words occurred between 300 and 500 times. The top six words seem to have very lighthearted, positive connotations: life, family, world, love, woman, and friends. Based on the frequency plot, it appears that Netflix series were slightly more abundant than Netflix documentaries. However, the major limitation to this word cloud is the lack of context.
 
 *Limitations:*
 

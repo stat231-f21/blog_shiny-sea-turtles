@@ -58,25 +58,10 @@ netflix_map_by_country <- netflix_map %>%
   group_by(ID) %>%
   summarize(number_of_films = n())
 
-# load in world map data
-world_map <- maps::map("world", plot = FALSE, fill = TRUE) %>% 
-  st_as_sf()
-
-# Make the IDs lowercase to match other dataset
-world_map$ID <- tolower(world_map$ID)
-
-# join world map and movies/shows by country datasets
-netflix_map_shows <- world_map %>%
-  inner_join(netflix_map_by_country, by = "ID")
-
-# rename ID and number_of_viewers
-netflix_map_shows <-
-  rename(Country = ID, 'Amount_of_Content' =  number_of_films)
-
 # dataset for Netflix shows by country with coordinates: netflix_map_shows
 
-# write netflix_map_by_country to csv (cant write geom to csv?)
-write.csv(netflix_map_by_country, file = 'netflix_map_by_country.csv')
+# write netflix_map_by_country to csv
+write.csv(netflix_map_by_country, file = 'main_data/netflix_map_by_country.csv')
 
 ## Netflix subs/revenue dataset ##
 
@@ -100,16 +85,8 @@ names(netflix_subs)<- str_replace_all(names(netflix_subs), c(" " = "_",
 netflix_subs <- netflix_subs %>%
   mutate(Number_of_Subscribers = Number_of_Subscribers_Q2_2021/1000)
 
-# Join world map and subs/revenue datasets
-netflix_subs_map <- world_map %>%
-  inner_join(netflix_subs, by = "ID")
-
-# rename ID
-netflix_subs_map <- netflix_subs_map %>%
-  rename(Country = ID)
-
-# write netflix_subs to csv (cant write geom to csv?)
-write.csv(netflix_subs, file = 'netflix_subs_map.csv')
+# write netflix_subs to csv
+write.csv(netflix_subs, file = 'main_data/netflix_subs_map.csv')
 
 ## Netflix show popularity datasets ##
 
@@ -204,16 +181,8 @@ shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show
 shows_popularity_full$Most_Popular_Show[shows_popularity_full$Most_Popular_Show 
                                         == "SquidGame"] <- "Squid Game"
 
-# Join world map and popular show datasets
-netflix_popular_show_map <- world_map %>%
-  inner_join(shows_popularity_full, by = "ID")
-
-# rename ID
-netflix_popular_show_map <- netflix_popular_show_map %>%
-  rename(Country = ID) 
-
-# write most_popular_show to csv (cant write geom to csv?)
-write.csv(shows_popularity_full, file = 'most_popular_show_map.csv')
+# write most_popular_show to csv
+write.csv(shows_popularity_full, file = 'main_data/most_popular_show_map.csv')
 
 #############
 # Bar Chart #
@@ -299,7 +268,8 @@ platforms_all_genre_rating <- platforms_all_genre_rating %>%
   mutate(IMDb = as.numeric(IMDb))
 
 # write platforms_all_genre_rating to csv
-write.csv(platforms_all_genre_rating, file = 'platforms_all_genre_rating.csv')
+write.csv(platforms_all_genre_rating, 
+          file = 'main_data/platforms_all_genre_rating.csv')
 
 # Get average Rotten Tomatoes rating for each platform by genre
 platforms_all_genre_Rotten <- platforms_all_genre %>%
@@ -316,5 +286,6 @@ platforms_all_genre_Rotten <- platforms_all_genre_Rotten %>%
   mutate(RottenTomatoes = as.numeric(RottenTomatoes))
 
 # write platforms_all_genre_Rotten to csv
-write.csv(platforms_all_genre_Rotten, file = 'platforms_all_genre_Rotten.csv')
+write.csv(platforms_all_genre_Rotten, 
+          file = 'main_data/platforms_all_genre_Rotten.csv')
 

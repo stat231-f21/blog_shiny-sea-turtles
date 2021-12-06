@@ -46,7 +46,7 @@ people_igraph <- graph_from_data_frame(d = ed,
 people_network <- ggnetwork(people_igraph)
 
 # write into csv so the entire code doesnt have to be run every time.
-write_csv(people_network, file = 'people_network.csv')
+write_csv(people_network, file = 'main_data/people_network.csv')
 
 # visualization
 ggplot(data = people_network, aes(x = x, y = y, 

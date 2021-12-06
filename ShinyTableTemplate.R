@@ -15,7 +15,8 @@ library(igraph)
 library(shinythemes)
 
 # Import data
-platforms_all_genre_rating <- read_csv("platforms_all_genre_rating.csv")
+platforms_all_genre_rating <- 
+  read_csv("main_data/platforms_all_genre_rating.csv")
 mtables <- read_csv("data/mtables.csv")
 
 # For TAB 1 Table widgets

@@ -357,6 +357,8 @@ The main limitation of the table comes from the lack of a check box feature in o
 
 # Network of Actors
 
+<<<<<<< HEAD
+=======
 ```{r figure2 data wrangling, eval = FALSE, include= FALSE}
 # Some preliminary data wrangling that builds off of what has already been done, but formats specific to use for making network
 
@@ -400,6 +402,7 @@ people_igraph <- graph_from_data_frame(d = ed,
   simplify()
 
 ```
+>>>>>>> eeda260d0ea8449f7c80358a19e38e19e5c184cc
 
 ```{r, include = FALSE}
 # Read in network data set

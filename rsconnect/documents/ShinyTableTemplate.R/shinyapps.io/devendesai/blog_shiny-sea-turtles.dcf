@@ -5,10 +5,10 @@ account: devendesai
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 5185738
-bundleId: 5334731
+bundleId: 5282767
 url: https://devendesai.shinyapps.io/blog_shiny-sea-turtles/
-when: 1638805932.40593
-lastSyncTime: 1638805932.40594
+when: 1637631572.86485
+lastSyncTime: 1637631572.86486
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: deven_data_wrangling.R|deven_shiny.R|img/Kenesha-Sneed_safe-space.jpeg|index.html|index.Rmd|kauila_data_wrangling.R|mahathi_data_wrangling.R|mahathi_visualization.R|most_popular_show_map.csv|netflix_map_by_country.csv|netflix_subs_map.csv|README.md|shiny_datawrangling.R|update_all_platforms.csv|visualization_test.Rmd
+ignoredFiles: blog_shinyapp.R|deven_data_wrangling.R|deven_shiny.R|img/Kenesha-Sneed_safe-space.jpeg|index.html|index.Rmd|kauila_data_wrangling.R|mahathi_data_wrangling.R|mahathi_visualization.R|most_popular_show_map.csv|netflix_map_by_country.csv|netflix_subs_map.csv|past_labs/lab11_spatial-data.Rmd|past_labs/ps5.Rmd|platforms_all_avg_IMDb_rating.csv|platforms_all_avg_Rotten_rating.csv|README.md|shiny_datawrangling.R|update_all_platforms.csv|visualization_test.Rmd

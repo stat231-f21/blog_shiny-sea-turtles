@@ -183,6 +183,7 @@ shows_popularity_master_long <- shows_popularity_master %>%
 # Get most popular show for each country
 most_popular_show <- shows_popularity_master_long %>% 
   group_by(ID) %>% 
+  top_n(1, PopularityScore) %>%
   slice(which.max(PopularityScore))
 
 # Delete countries with a most popular show with a score of 0

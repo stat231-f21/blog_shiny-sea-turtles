@@ -85,7 +85,7 @@ final3 <- final3 %>%
 
 # create dataframes for igraph
 ve <- final3
-ed <- df %>%
+ed <- df %>% 
   mutate(from = rownames(.)) %>%
   tidyr::gather(to, weight, 1:nrow(final5)) %>%
   mutate(weight = ifelse(weight == 0, NA, weight)) %>% 

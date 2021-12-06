@@ -51,11 +51,11 @@ ui <- navbarPage(
                     sep = "",),
         sliderInput("rottentom", "Rotten Tomatoes Rating",min = 0, max = 100, 
                     value = c(0, 100),sep = "",),
-      
+        width = 3
       
       ),
       
-      mainPanel(DT::dataTableOutput(outputId = "table"))
+      mainPanel(DT::dataTableOutput(outputId = "table"), width = 9)
 
     )
   ),

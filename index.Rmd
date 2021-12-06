@@ -455,7 +455,7 @@ wordcloud(words = desc_frequencies$word,
           freq = desc_frequencies$n,
           min.freq = 20,
           max.words = 100,
-          # plot the words in a random order
+          # plot the words in a non-random order
           random.order = FALSE,
           # specify the range of the size of the words
           scale = c(4, 0.25),
@@ -470,13 +470,17 @@ wordcloud(words = desc_frequencies$word,
 
 ```{r top-words-plot, fig.width = 5, fig.height = 3.2, include = FALSE}
 d <- d_words %>%
+  #make a count of the words in order from most frequen to least
   count(word, sort = TRUE) %>% 
+  #slice the top 10 words
   slice(1:10) %>%
+  #create a ggplot change color of words
   ggplot(aes(x = reorder(word, n), y = n, 
              color = word, fill = word)) +
   geom_col() +
   coord_flip() +
   guides(color = "none", fill = "none") +
+  #change label
   labs(x = NULL,
        y = "Number of instances",
        title = "The most common words in Netflix descriptions")

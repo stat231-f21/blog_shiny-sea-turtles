@@ -293,10 +293,10 @@ For this map, the popularity scores are based solely on people searching Strange
 
 # Shiny App
 
-```{r, out.extra="data-external=1", fig.height = 4, fig.width = 8, out.width = "100%"}
+```{r, out.extra="data-external=1", fig.height = 7, fig.width = 8.5, out.width = "100%"}
 # Embed shiny app
 knitr::include_app("https://devendesai.shinyapps.io/blog_shiny-sea-turtles/", 
-                   height = "400px")
+                   height = "750px")
 ```
 
 ## Bar Chart

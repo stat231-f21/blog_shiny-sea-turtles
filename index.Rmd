@@ -87,7 +87,7 @@ knitr::include_graphics("https://miro.medium.com/max/821/1*Fi6masemXJT3Q8YWekQCD
 
 * [Google trends](https://trends.google.com/trends/?geo=US) collects data on the popularity of search queries on Google by location in a given time period. We used Google trends to get multiple data sets on popularity scores for the most popular Netflix Original shows (Money Heist, Stranger Things, Bridgerton, 13 Reasons Why, and Squid Game) by country since their debut. Google calculates a search query’s popularity score by country “on a scale from 0 to 100, where 100 is the location with the most popularity as a fraction of total searches in that location.” 
 
-```{r map extra wrangling}
+```{r map extra wrangling, include = FALSE}
 ## Necessary wrangling that could not be done in wrangling file ##
 
 # Read in main data sets
@@ -154,13 +154,19 @@ To create the maps, we performed data wrangling on the Kaggle data set of Netfli
 
 ## Content Filming Locations
 
-We used the [Kaggle data set](https://www.kaggle.com/shivamb/netflix-shows) to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that data set to a world map data set containing the coordinates of each country. The code in the first code block displays how we addressed shows that were produced in multiple countries, making a new line for the show in each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no data on their content). We have included the code for this map (in the second code block) so that you can see the general code of how we made all of our maps using the `plotly` package. We also used the `expss` package to assign more readable labels to variables, which you can see in the third code block; the map also uses the `expss` package in order to display the labels of variables instead of the original variable names. 
+We used the [Kaggle data set](https://www.kaggle.com/shivamb/netflix-shows) to create the map of the amount of Netflix content filmed in each country by grouping the titles by country and joining that data set to a world map data set containing the coordinates of each country. The code in the first code block displays how we addressed shows that were produced in multiple countries, making a new line for the show in each country. In the main visualization, there is a hover feature that allows users to identify countries on the map and how much content was filmed in them, and viewers can zoom into the map to more closely examine specific continents or regions; we used the `plotly` package to achieve these features. The map is also color coded with a gradient based on how much content a country had filmed in it compared to other countries (countries with a white fill had no data on their content). We have included the code for this map (in the third code block) so that you can see the general code of how we made all of our maps using the `plotly` package. We also used the `expss` package to assign more readable labels to variables, which you can see in the second code block; the map also uses the `expss` package in order to display the labels of variables instead of the original variable names. 
 
 ```{r, eval = FALSE, echo = TRUE}
 # If movies have multiple countries, make a new row for each country
 netflix_map <- netflix_shows %>%
   unnest_tokens(output = country, input = country, token = "regex", 
                 pattern = c(", ",","))
+```
+
+```{r, eval = FALSE, echo = TRUE}
+# Add labels
+netflix_map_shows = apply_labels(netflix_map_shows,
+                                 Amount_of_Content = "Amount of Content")
 ```
 
 ```{r map1, fig.width = 7.5, echo = TRUE}
@@ -190,12 +196,6 @@ use_labels(netflix_map_shows, ggplotly(ggplot() +
                                     'Added From 2014 to 2021',
                                     '</sup>'), 
                       xref = "paper", xanchor = "center")))
-```
-
-```{r, eval = FALSE, echo = TRUE}
-# Add labels
-netflix_map_shows = apply_labels(netflix_map_shows,
-                                 Amount_of_Content = "Amount of Content")
 ```
 
 *Findings:*

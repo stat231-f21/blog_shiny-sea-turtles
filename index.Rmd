@@ -378,7 +378,7 @@ ggplot(data = people_network, aes(x = x, y = y,
   labs(caption = "Actor Relationships")
 ```
 
-*Procedure:*
+*Procedure:* 
 
 The purpose of the network visualization was to exhibit the connections between individuals who had worked on a variety of Netflix titles together; it provides information on the magnitude of common projects, and from the network we can extrapolate whether there are any high profile collaborations amongst artists across countries. 
 

@@ -397,8 +397,8 @@ Additionally, a network becomes difficult to read if too many observations are i
 # Wordcloud of Movie/Show Descriptions {.tabset .tabset-fade .tabset-pills}
 
 ```{r Load Data Wordcloud, include = FALSE}
-desc_frequencies <- read_csv("data/wordcloud.csv")
-d_words <- read_csv("data/d_words.csv")
+desc_frequencies <- read_csv("main_data/wordcloud.csv")
+d_words <- read_csv("main_data/d_words.csv")
 ```
 
 ## Wordcloud 

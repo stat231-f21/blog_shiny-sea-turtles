@@ -31,7 +31,7 @@ stop_words %>%
 d_words <- description_all %>%
   anti_join(stop_words, by = "word")
 
-write_csv(d_words, "data/d_words.csv")
+write_csv(d_words, "main_data/d_words.csv")
 
 # Explore which stop words were removed
 ## If you don't want all these words removed, you can modify 
@@ -58,7 +58,7 @@ desc_frequencies <- shows %>%
   anti_join(stop_words, by = "word") %>%
   count(word, sort = TRUE) 
 
-write_csv(desc_frequencies, "data/wordcloud.csv")
+write_csv(desc_frequencies, "main_data/wordcloud.csv")
 
 # Word cloud will rearrange each time unless seed is set
 set.seed(53)

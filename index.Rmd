@@ -12,7 +12,7 @@ output:
 
 ```{r setup, include = FALSE}
 # Load packages
-library(tidyverse)
+library(tidyverse) 
 library(tidytext)
 library(wordcloud)
 library(textdata)

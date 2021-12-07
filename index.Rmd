@@ -53,7 +53,7 @@ Entertainment plays an important role in every human society, across time period
 
 ```{r, fig.cap = "Netflix's Content Library"}
 # Add image
-knitr::include_graphics("https://cdn.tmobile.com/content/dam/t-mobile/ntm/specific-use/netflix/bg/619306-bg-full-netflix-grid-v2.desktop.jpg")
+knitr::include_graphics("https://cdn.tmobile.com/content/dam/t-mobile/ntm/specific-use/netflix/bg/619306-bg-full-netflix-grid-v2.desktop.jpg") 
 ```
 
 This project is about different aspects of big streaming services; the main focus is on Netflix, but we also compare movie ratings between Netflix, Disney+, Hulu, and Amazon Prime Video. For those unfamiliar with the platform, Netflix is a subscription-based streaming service (https://help.netflix.com/en/node/412). Users, choosing from a range of subscriptions options (basic, standard, or premium), pay a fee (\$8.99, \$13.99, or \$17.99) once a month and are able to watch a wide range of award-winning movies, anime, documentaries, and TV shows. The content is streamed in more than 30 languages in about 190 countries (https://about.netflix.com/en). A major benefit to Netflix is that all of the content is advertisement-free. Netflix is the largest streaming platform to date with over 210 million subscribers. Hulu, Disney+, and Prime Video are very similar to Netflix; the only difference is the content. Streaming services these past few years, with theaters closed and families staying home, experienced a massive influx of users during the pandemic. Commercial films that were to be released in theaters were instead released on these various streaming platforms where families could watch new releases in the comfort and safety of their homes. 

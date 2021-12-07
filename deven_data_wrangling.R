@@ -58,8 +58,6 @@ netflix_map_by_country <- netflix_map %>%
   group_by(ID) %>%
   summarize(number_of_films = n())
 
-# dataset for Netflix shows by country with coordinates: netflix_map_shows
-
 # write netflix_map_by_country to csv
 write.csv(netflix_map_by_country, file = 'main_data/netflix_map_by_country.csv')
 
@@ -103,11 +101,16 @@ thirteenreasons <- thirteenreasons %>%
   rename(ID = V1, ThirteenReasonsWhy = V2)
 
 # Delete first two rows of each set
-bridgerton <- bridgerton[-c(1, 2), ]
-squidgame <- squidgame[-c(1, 2), ]
-moneyheist <- moneyheist[-c(1, 2), ]
-strangerthings <- strangerthings[-c(1, 2), ]
-thirteenreasons <- thirteenreasons[-c(1, 2), ]
+bridgerton <- bridgerton %>% 
+  slice(-c(1, 2))
+squidgame <- squidgame %>% 
+  slice(-c(1, 2))
+moneyheist <- moneyheist %>% 
+  slice(-c(1, 2))
+strangerthings <- strangerthings %>% 
+  slice(-c(1, 2))
+thirteenreasons <- thirteenreasons %>% 
+  slice(-c(1, 2))
 
 # Join datasets of show popularity
 shows_popularity_master <- bridgerton %>% 

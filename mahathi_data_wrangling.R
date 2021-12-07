@@ -5,6 +5,7 @@ library(kableExtra)
 library(tidyr)
 library(dplyr)
 library(stringr)
+library(igraph)
 
 # read in csv
 netflix_titles <- read_csv("data/netflix_titles.csv")
